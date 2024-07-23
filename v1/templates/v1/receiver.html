@@ -3,7 +3,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Room {{ room_id }} - {{ other_person_name }}</title>
+    <title>
+      Mistery Exchange | Room {{ room_id }} - {{ receiver }}
+    </title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -11,39 +13,49 @@
     />
   </head>
   <body>
-    <h1>Room ID: {{ room_id }}</h1>
-    <h2>Welcome, {{ other_person_name }}</h2>
+    <div>
+      <h1>Welcome, {{ receiver }}!</h1>
+      <p>Room ID: {{ room_id }}</p>
+    </div>
 
-    <h2>Reply about yourself</h2>
-    <form method="post" action="{% url 'receiver' room_id other_person_name %}">
-      {% csrf_token %}
-      <ul>
-        {% for question in questions %}
-        <li>
-          <label>{{ question.question }}</label>
-          <input
-            type="text"
-            name="self_b_{{ question.question_id }}"
-            required
-          />
-        </li>
-        {% endfor %}
-      </ul>
+    <h2>{{ sender }} has shared the below with you</h2>
 
-      <h2>Reply about {{ user_name }}</h2>
-      <ul>
-        {% for question in questions %}
-        <li>
-          <label>{{ question.question }}</label>
-          <input
-            type="text"
-            name="other_b_{{ question.question_id }}"
-            required
-          />
-        </li>
-        {% endfor %}
-      </ul>
-      <button type="submit">Submit</button>
+    <div style="display: flex; justify-content: space-around;">
+      <div>
+        <h2>Reply about yourself</h2>
+        <form method="post" action="{% url 'receiver' room_id receiver %}">
+          {% csrf_token %}
+          <ul>
+            {% for question in questions %}
+            <li>
+              <label>{{ question.question }}</label>
+              <input
+                type="text"
+                name="self_b_{{ question.question_id }}"
+                required
+              />
+            </li>
+            {% endfor %}
+          </ul>
+      </div>  
+
+      <div>
+        <h2>Reply about {{ sender }}</h2>
+        <ul>
+          {% for question in questions %}
+          <li>
+            <label>{{ question.question }}</label>
+            <input
+              type="text"
+              name="other_b_{{ question.question_id }}"
+              required
+            />
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+      <button type="submit" style="width: 100px; align-self: center;">Submit</button>
     </form>
   </body>
 </html>

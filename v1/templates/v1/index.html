@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Couple Trivia Game</title>
+    <title>Mistery Exchange</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -11,12 +11,15 @@
     />
   </head>
   <body>
-    <h1>Couple Trivia Game</h1>
-    <button onclick="window.location.href='{% url 'create' %}'">Create</button>
-    <br /><br />
-    <input type="text" id="roomId" placeholder="Enter Room ID" />
-    <button onclick="joinRoom()">Join</button>
-
+    <h1>Mistery Exchange</h1>
+    <div>
+      <button onclick="window.location.href='{% url 'create' %}'">
+        Create
+      </button>
+      <br /><br />
+      <input type="text" id="roomId" placeholder="Enter Room ID" />
+      <button onclick="joinRoom()">Join</button>
+    </div>
     <script>
       function joinRoom() {
         const roomId = document.getElementById("roomId").value;

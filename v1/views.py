@@ -6,8 +6,9 @@ def index(request):
 
 def create(request):
     if request.method == 'POST':
-        user_name = request.POST['user_name']
-        other_person_name = request.POST['other_person_name']
+        # Takes sender, receiver and questions
+        sender = request.POST['sender']
+        receiver = request.POST['receiver']
         questions = [
             request.POST['question1'],
             request.POST['question2'],
@@ -15,45 +16,63 @@ def create(request):
             request.POST['question4'],
             request.POST['question5']
         ]
-        room = Room.objects.create(user_name=user_name, other_person_name=other_person_name)
+        # Creates new room object, with sender and receiver information gathered above
+        room = Room.objects.create(user_name=sender, other_person_name=receiver)
+        # For each of the questions, it creates a new question object tied to the room ID
         for q in questions:
             Question.objects.create(room=room, question=q)
-        return redirect(f'/{room.id}/{user_name}/')
+        # Redirects for SENDER to answer the questions (more in the "sender" function)  
+        return redirect(f'/{room.id}/{sender}/')
     return render(request, 'v1/create.html')
 
-def sender(request, room_id, user_name):
+def sender(request, room_id, sender):
+    # After form is submitted
     if request.method == 'POST':
+        # Obtains room id from url, and its related questions
         room = get_object_or_404(Room, id=room_id)
         questions = Question.objects.filter(room=room)
+        # For each question
         for question in questions:
+            # SENDER replies about themselves (self_a)
             question.self_a = request.POST.get(f'self_a_{question.question_id}')
+            # SENDER replies about RECEIVER (other_a)
             question.other_a = request.POST.get(f'other_a_{question.question_id}')
             question.save()
+        # Redirects to room page (more in the "room" function)    
         return redirect(f'/{room.id}/')
     
+    # if method = "GET", obtains room id, related questions and RECEIVER name to display sender.html template
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
-    other_person_name = room.other_person_name
-    return render(request, 'v1/sender.html', {'room_id': room_id, 'user_name': user_name, 'questions': questions, 'other_person_name': other_person_name})
+    receiver = room.other_person_name
+    return render(request, 'v1/sender.html', {'room_id': room_id, 'sender': sender, 'questions': questions, 'receiver': receiver})
 
-def receiver(request, room_id, other_person_name):
+def receiver(request, room_id, receiver):
+    # After form is submitted
     if request.method == 'POST':
+        # Obtains room id from url, and its related questions
         room = get_object_or_404(Room, id=room_id)
         questions = Question.objects.filter(room=room)
+        # For each question
         for question in questions:
+            # RECEIVER replies about themselves (self_b)
             question.self_b = request.POST.get(f'self_b_{question.question_id}')
+            # RECEIVER replies about SENDER (other_b)
             question.other_b = request.POST.get(f'other_b_{question.question_id}')
             question.save()
+        # Redirects to room page (more in the "room" function)      
         return redirect(f'/{room.id}/')
     
+    # if method = "GET", obtains room id, related questions and SENDER name to display receiver.html template
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
-    user_name = room.user_name
-    return render(request, 'v1/receiver.html', {'room_id': room_id, 'user_name': user_name, 'questions': questions, 'other_person_name': other_person_name})    
+    sender = room.user_name
+    return render(request, 'v1/receiver.html', {'room_id': room_id, 'sender': sender, 'questions': questions, 'receiver': receiver})    
 
 def room(request, room_id):
+    # Obtains room id from url, looks for sender, receiver in model + All questions and answers
     room = get_object_or_404(Room, id=room_id)
-    user_name = room.user_name
-    other_person_name = room.other_person_name
+    sender = room.user_name
+    receiver = room.other_person_name
     questions = Question.objects.filter(room=room)
-    return render(request, 'v1/room.html', {'room_id': room_id, 'questions': questions, 'user_name': user_name, 'other_person_name': other_person_name})
+    return render(request, 'v1/room.html', {'room_id': room_id, 'questions': questions, 'sender': sender, 'receiver': receiver})

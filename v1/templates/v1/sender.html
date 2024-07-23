@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Room {{ room_id }} - {{ user_name }}</title>
+    <title>Mistery Exchange | Room {{ room_id }} - {{ sender }}</title>
     <link
       rel="stylesheet"
       type="text/css"
@@ -11,41 +11,50 @@
     />
   </head>
   <body>
-    <h1>Room ID: {{ room_id }}</h1>
-    <h2>Welcome, {{ user_name }}</h2>
-    <p>Share this link with your partner:</p>
-    <input type="text" value="{{ request.build_absolute_uri }}" readonly />
-
-    <h2>Reply about yourself</h2>
-    <form method="post" action="{% url 'sender' room_id user_name %}">
-      {% csrf_token %}
-      <ul>
-        {% for question in questions %}
-        <li>
-          <label>{{ question.question }}</label>
-          <input
-            type="text"
-            name="self_a_{{ question.question_id }}"
-            required
-          />
-        </li>
-        {% endfor %}
-      </ul>
-
-      <h2>Reply about {{ other_person_name }}</h2>
-      <ul>
-        {% for question in questions %}
-        <li>
-          <label>{{ question.question }}</label>
-          <input
-            type="text"
-            name="other_a_{{ question.question_id }}"
-            required
-          />
-        </li>
-        {% endfor %}
-      </ul>
-      <button type="submit">Submit</button>
-    </form>
+    <div>
+      <h1>Room created!</h1>
+      <p>Room ID: {{ room_id }}</p>
+    </div>
+    <div>
+      <h2>{{ sender }} please make sure to share the below link with {{ receiver }}</h2>
+      <input type="text" value="{{ request.build_absolute_uri }}" readonly style="width: 70dvw; text-align: center;"/>
+    </div>
+    <div style="display: flex; justify-content: space-around;">
+      <div>
+        <h2>Reply about yourself</h2>
+        <form method="post" action="{% url 'sender' room_id sender %}">
+          {% csrf_token %}
+          <ul>
+            {% for question in questions %}
+            <li>
+              <label>{{ question.question }}</label>
+              <input
+                type="text"
+                name="self_a_{{ question.question_id }}"
+                required
+              />
+            </li>
+            {% endfor %}
+          </ul>
+      </div>  
+      <div>
+        <h2>Reply about {{ receiver }}</h2>
+        <ul>
+          {% for question in questions %}
+          <li>
+            <label>{{ question.question }}</label>
+            <input
+              type="text"
+              name="other_a_{{ question.question_id }}"
+              required
+            />
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+        <button type="submit" style="width: 100px; align-self: center;">Submit</button>
+      </form>
+    
   </body>
 </html>

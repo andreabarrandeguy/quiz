@@ -3,54 +3,61 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Room {{ room_id }} - {{ user_name }}</title>
+    <title>Mystery Exchange | Room {{ room_id }}</title>
     <link
       rel="stylesheet"
       type="text/css"
       href="{% static 'v1/css/styles.css' %}"
     />
+    <style>
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 20px 0;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: center;
+      }
+      th {
+        background-color: #f2f2f2;
+      }
+    </style>
   </head>
   <body>
     <h1>Room ID: {{ room_id }}</h1>
 
-    <h2>Replies from {{ user_name }} about themselves</h2>
-    <ul>
+    <table class="results">
+      <tr>
+        <th>Question</th>
+        <th>{{ sender }}'s Reply</th>
+        <th>{{ receiver }}'s Reply about {{ sender }}</th>
+      </tr>
       {% for question in questions %}
-      <li>
-        <label>{{ question.question }}</label>
-        <label>{{ question.self_a }}</label>
-      </li>
+      <tr>
+        <td>{{ question.question }}</td>
+        <td>{{ question.self_a }}</td>
+        <td>{{ question.other_b }}</td>
+      </tr>
       {% endfor %}
-    </ul>
+    </table>
 
-    <h2>Replies from {{ user_name }} about {{ other_person_name }}</h2>
-    <ul>
+    <table class="results">
+      <tr>
+        <th>Question</th>
+        <th>{{ receiver }}'s Reply</th>
+        <th>{{ sender }}'s Reply about {{ receiver }}</th>
+      </tr>
       {% for question in questions %}
-      <li>
-        <label>{{ question.question }}</label>
-        <label>{{ question.other_a }}</label>
-      </li>
+      <tr>
+        <td>{{ question.question }}</td>
+        <td>{{ question.self_b }}</td>
+        <td>{{ question.other_a }}</td>
+      </tr>
       {% endfor %}
-    </ul>
-
-    <h2>Replies from {{ other_person_name }} about themselves</h2>
-    <ul>
-      {% for question in questions %}
-      <li>
-        <label>{{ question.question }}</label>
-        <label>{{ question.self_b }}</label>
-      </li>
-      {% endfor %}
-    </ul>
-
-    <h2>Replies from {{ other_person_name }} about {{ user_name }}</h2>
-    <ul>
-      {% for question in questions %}
-      <li>
-        <label>{{ question.question }}</label>
-        <label>{{ question.other_b }}</label>
-      </li>
-      {% endfor %}
-    </ul>
+    </table>
+    <a href="{% url 'create' %}" class="createNew">Create a new one!</a>
   </body>
 </html>
