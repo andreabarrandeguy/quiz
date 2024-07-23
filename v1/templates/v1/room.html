@@ -13,7 +13,7 @@
   <body>
     <h1>Room ID: {{ room_id }}</h1>
 
-    <h2>Replies about yourself</h2>
+    <h2>Replies from {{ user_name }} about themselves</h2>
     <ul>
       {% for question in questions %}
       <li>
@@ -23,12 +23,32 @@
       {% endfor %}
     </ul>
 
-    <h2>Replies about {{ other_person_name }}</h2>
+    <h2>Replies from {{ user_name }} about {{ other_person_name }}</h2>
     <ul>
       {% for question in questions %}
       <li>
         <label>{{ question.question }}</label>
         <label>{{ question.other_a }}</label>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2>Replies from {{ other_person_name }} about themselves</h2>
+    <ul>
+      {% for question in questions %}
+      <li>
+        <label>{{ question.question }}</label>
+        <label>{{ question.self_b }}</label>
+      </li>
+      {% endfor %}
+    </ul>
+
+    <h2>Replies from {{ other_person_name }} about {{ user_name }}</h2>
+    <ul>
+      {% for question in questions %}
+      <li>
+        <label>{{ question.question }}</label>
+        <label>{{ question.other_b }}</label>
       </li>
       {% endfor %}
     </ul>

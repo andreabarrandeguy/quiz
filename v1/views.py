@@ -33,8 +33,23 @@ def sender(request, room_id, user_name):
     
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
-    other_person_name = room.other_person_name if room.user_name == user_name else room.user_name
+    other_person_name = room.other_person_name
     return render(request, 'v1/sender.html', {'room_id': room_id, 'user_name': user_name, 'questions': questions, 'other_person_name': other_person_name})
+
+def receiver(request, room_id, other_person_name):
+    if request.method == 'POST':
+        room = get_object_or_404(Room, id=room_id)
+        questions = Question.objects.filter(room=room)
+        for question in questions:
+            question.self_b = request.POST.get(f'self_b_{question.question_id}')
+            question.other_b = request.POST.get(f'other_b_{question.question_id}')
+            question.save()
+        return redirect(f'/{room.id}/')
+    
+    room = get_object_or_404(Room, id=room_id)
+    questions = Question.objects.filter(room=room)
+    user_name = room.user_name
+    return render(request, 'v1/receiver.html', {'room_id': room_id, 'user_name': user_name, 'questions': questions, 'other_person_name': other_person_name})    
 
 def room(request, room_id):
     room = get_object_or_404(Room, id=room_id)

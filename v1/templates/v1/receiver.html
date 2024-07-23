@@ -1,0 +1,49 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Room {{ room_id }} - {{ other_person_name }}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'v1/css/styles.css' %}"
+    />
+  </head>
+  <body>
+    <h1>Room ID: {{ room_id }}</h1>
+    <h2>Welcome, {{ other_person_name }}</h2>
+
+    <h2>Reply about yourself</h2>
+    <form method="post" action="{% url 'receiver' room_id other_person_name %}">
+      {% csrf_token %}
+      <ul>
+        {% for question in questions %}
+        <li>
+          <label>{{ question.question }}</label>
+          <input
+            type="text"
+            name="self_b_{{ question.question_id }}"
+            required
+          />
+        </li>
+        {% endfor %}
+      </ul>
+
+      <h2>Reply about {{ user_name }}</h2>
+      <ul>
+        {% for question in questions %}
+        <li>
+          <label>{{ question.question }}</label>
+          <input
+            type="text"
+            name="other_b_{{ question.question_id }}"
+            required
+          />
+        </li>
+        {% endfor %}
+      </ul>
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
