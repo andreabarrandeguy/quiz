@@ -1,0 +1,78 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Create Room</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'v1/css/styles.css' %}"
+    />
+  </head>
+  <body>
+    <h1>Create Room</h1>
+    <form method="post" action="{% url 'create' %}">
+      {% csrf_token %}
+      <div>
+        <label>Your Name:</label>
+        <input type="text" name="user_name" required />
+      </div>
+      <div>
+        <label>Other Person's Name:</label>
+        <input type="text" name="other_person_name" required />
+      </div>
+      <div>
+        <label>Question 1:</label>
+        <input
+          type="text"
+          name="question1"
+          class="question-field"
+          value="Favorite place"
+          required
+        />
+      </div>
+      <div>
+        <label>Question 2:</label>
+        <input
+          type="text"
+          name="question2"
+          class="question-field"
+          value="Strength"
+          required
+        />
+      </div>
+      <div>
+        <label>Question 3:</label>
+        <input
+          type="text"
+          name="question3"
+          class="question-field"
+          value="Weakness"
+          required
+        />
+      </div>
+      <div>
+        <label>Question 4:</label>
+        <input
+          type="text"
+          name="question4"
+          class="question-field"
+          value="Biggest dream"
+          required
+        />
+      </div>
+      <div>
+        <label>Question 5:</label>
+        <input
+          type="text"
+          name="question5"
+          class="question-field"
+          value="Favorite movie"
+          required
+        />
+      </div>
+      <button type="submit">Create</button>
+    </form>
+  </body>
+</html>

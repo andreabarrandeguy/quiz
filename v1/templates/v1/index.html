@@ -1,0 +1,31 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Couple Trivia Game</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'v1/css/styles.css' %}"
+    />
+  </head>
+  <body>
+    <h1>Couple Trivia Game</h1>
+    <button onclick="window.location.href='{% url 'create' %}'">Create</button>
+    <br /><br />
+    <input type="text" id="roomId" placeholder="Enter Room ID" />
+    <button onclick="joinRoom()">Join</button>
+
+    <script>
+      function joinRoom() {
+        const roomId = document.getElementById("roomId").value;
+        if (roomId) {
+          window.location.href = `/join/?room_id=${roomId}`; // Adjust this URL pattern as needed
+        } else {
+          alert("Please enter a room ID.");
+        }
+      }
+    </script>
+  </body>
+</html>
