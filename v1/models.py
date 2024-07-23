@@ -9,6 +9,8 @@ class Room(models.Model):
 class Question(models.Model):
     question_id = models.AutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
-    text = models.CharField(max_length=255)
-    user_name_reply = models.CharField(max_length=255, null=True, blank=True)
-    other_person_name_reply = models.CharField(max_length=255, null=True, blank=True)
+    question = models.CharField(max_length=255)
+    self_a = models.CharField(max_length=255, null=True, blank=True) 
+    self_b = models.CharField(max_length=255, null=True, blank=True)
+    other_a = models.CharField(max_length=255, null=True, blank=True)
+    other_b = models.CharField(max_length=255, null=True, blank=True)

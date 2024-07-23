@@ -16,11 +16,36 @@
     <p>Share this link with your partner:</p>
     <input type="text" value="{{ request.build_absolute_uri }}" readonly />
 
-    <h2>Questions</h2>
-    <ul>
-      {% for question in questions %}
-      <li>{{ question.text }}</li>
-      {% endfor %}
-    </ul>
+    <h2>Reply about yourself</h2>
+    <form method="post" action="{% url 'sender' room_id user_name %}">
+      {% csrf_token %}
+      <ul>
+        {% for question in questions %}
+        <li>
+          <label>{{ question.question }}</label>
+          <input
+            type="text"
+            name="self_a_{{ question.question_id }}"
+            required
+          />
+        </li>
+        {% endfor %}
+      </ul>
+
+      <h2>Reply about {{ other_person_name }}</h2>
+      <ul>
+        {% for question in questions %}
+        <li>
+          <label>{{ question.question }}</label>
+          <input
+            type="text"
+            name="other_a_{{ question.question_id }}"
+            required
+          />
+        </li>
+        {% endfor %}
+      </ul>
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>

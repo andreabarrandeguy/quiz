@@ -22,7 +22,23 @@ def create(request):
     return render(request, 'v1/create.html')
 
 def sender(request, room_id, user_name):
+    if request.method == 'POST':
+        room = get_object_or_404(Room, id=room_id)
+        questions = Question.objects.filter(room=room)
+        for question in questions:
+            question.self_a = request.POST.get(f'self_a_{question.question_id}')
+            question.other_a = request.POST.get(f'other_a_{question.question_id}')
+            question.save()
+        return redirect(f'/{room.id}/')
+    
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
     other_person_name = room.other_person_name if room.user_name == user_name else room.user_name
     return render(request, 'v1/sender.html', {'room_id': room_id, 'user_name': user_name, 'questions': questions, 'other_person_name': other_person_name})
+
+def room(request, room_id):
+    room = get_object_or_404(Room, id=room_id)
+    user_name = room.user_name
+    other_person_name = room.other_person_name
+    questions = Question.objects.filter(room=room)
+    return render(request, 'v1/room.html', {'room_id': room_id, 'questions': questions, 'user_name': user_name, 'other_person_name': other_person_name})
