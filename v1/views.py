@@ -17,7 +17,7 @@ def create(request):
         ]
         room = Room.objects.create(user_name=user_name, other_person_name=other_person_name)
         for q in questions:
-            Question.objects.create(room=room, text=q)
+            Question.objects.create(room=room, question=q)
         return redirect(f'/{room.id}/{user_name}/')
     return render(request, 'v1/create.html')
 
