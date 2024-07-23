@@ -3,6 +3,12 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lustria&display=swap"
+      rel="stylesheet"
+    />
     <title>Mistery Exchange | Create Room</title>
     <link
       rel="stylesheet"
@@ -14,65 +20,67 @@
     <h1>Create Room</h1>
     <form method="post" action="{% url 'create' %}">
       {% csrf_token %}
-      <div style="display: flex; width: 100dvw; justify-content: space-evenly">
+      <div class="inputNames">
         <div>
           <label>Your Name:</label>
           <input type="text" name="sender" required />
         </div>
-        <div>
+        <div style="margin-left: 10px">
           <label>Other Person's Name:</label>
           <input type="text" name="receiver" required />
         </div>
       </div>
       <div>
-        <label>Question 1:</label>
-        <input
-          type="text"
-          name="question1"
-          class="question-field"
-          value="Favorite place"
-          required
-        />
-      </div>
-      <div>
-        <label>Question 2:</label>
-        <input
-          type="text"
-          name="question2"
-          class="question-field"
-          value="Strength"
-          required
-        />
-      </div>
-      <div>
-        <label>Question 3:</label>
-        <input
-          type="text"
-          name="question3"
-          class="question-field"
-          value="Weakness"
-          required
-        />
-      </div>
-      <div>
-        <label>Question 4:</label>
-        <input
-          type="text"
-          name="question4"
-          class="question-field"
-          value="Biggest dream"
-          required
-        />
-      </div>
-      <div>
-        <label>Question 5:</label>
-        <input
-          type="text"
-          name="question5"
-          class="question-field"
-          value="Favorite movie"
-          required
-        />
+        <div>
+          <label>Question 1:</label>
+          <input
+            type="text"
+            name="question1"
+            class="question-field"
+            value="Favorite place"
+            required
+          />
+        </div>
+        <div>
+          <label>Question 2:</label>
+          <input
+            type="text"
+            name="question2"
+            class="question-field"
+            value="Strength"
+            required
+          />
+        </div>
+        <div>
+          <label>Question 3:</label>
+          <input
+            type="text"
+            name="question3"
+            class="question-field"
+            value="Weakness"
+            required
+          />
+        </div>
+        <div>
+          <label>Question 4:</label>
+          <input
+            type="text"
+            name="question4"
+            class="question-field"
+            value="Biggest dream"
+            required
+          />
+        </div>
+        <div>
+          <label>Question 5:</label>
+          <input
+            type="text"
+            name="question5"
+            class="question-field"
+            value="Favorite movie"
+            required
+          />
+        </div>
       </div>
       <div
         style="
@@ -85,7 +93,7 @@
         <a href="{% url 'index' %}" style="text-decoration: none; color: white"
           >Back</a
         >
-        <button type="submit">Create</button>
+        <button type="submit" class="CreateButton">Create</button>
       </div>
     </form>
   </body>
