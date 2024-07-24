@@ -44,8 +44,8 @@ def sender(request, room_id, sender):
     # if method = "GET", obtains room id, related questions and RECEIVER name to display sender.html template
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
-    receiver = room.other_person_name
-    return render(request, 'v1/sender.html', {'room_id': room_id, 'sender': sender, 'questions': questions, 'receiver': receiver})
+    receiver = room.other_person_name #Receiver wasn't specified
+    return render(request, 'v1/sender.html', {'room_id': room.id, 'sender': sender, 'questions': questions, 'receiver': receiver}) #Change 'room_id':room_id for 'room_id':room.id
 
 def receiver(request, room_id, receiver):
     # After form is submitted
@@ -67,7 +67,8 @@ def receiver(request, room_id, receiver):
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
     sender = room.user_name
-    return render(request, 'v1/receiver.html', {'room_id': room_id, 'sender': sender, 'questions': questions, 'receiver': receiver})    
+    receiver = room.other_person_name
+    return render(request, 'v1/receiver.html', {'room_id': room.id, 'sender': sender, 'questions': questions, 'receiver': receiver}) #'room_id':room_id for 'room_id':room.id
 
 def room(request, room_id):
     # Obtains room id from url, looks for sender, receiver in model + All questions and answers

@@ -23,7 +23,7 @@
     </div>
     <div>
       <h2>{{ sender }} please make sure to share the below link with {{ receiver }}</h2>
-      <input type="text" value="{{ request.build_absolute_uri }}" readonly style="width: 70dvw; text-align: center;"/>
+      <input type="text" value="{{request.scheme}}://{{request.get_host}}{% url 'receiver' room_id=room_id receiver=receiver %}" readonly style="width: 70dvw; text-align: center;"/>
     </div>
     <div style="display: flex; justify-content: space-around;">
       <div>
