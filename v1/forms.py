@@ -13,7 +13,7 @@ class NewRoomForm(forms.ModelForm):
 
 
 class NewQuestionForm(forms.ModelForm):
-    question=forms.CharField(label=False, max_length=255, widget=forms.TextInput({"placeholder":"e.g. A weakeness"}))
+    question=forms.CharField(label=False, required=False, max_length=255, widget=forms.TextInput({"placeholder":"e.g. A weakeness"}))
 
     class Meta:
         model=TemporaryQuestion
