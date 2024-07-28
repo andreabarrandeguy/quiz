@@ -21,79 +21,32 @@
     <form method="post" action="{% url 'create' %}">
       {% csrf_token %}
       <div class="inputNames">
-        <div>
-          <label>Your Name:</label>
-          <input type="text" name="sender" required />
+        {{room_form}}
         </div>
-        <div style="margin-left: 10px">
-          <label>Other Person's Name:</label>
-          <input type="text" name="receiver" required />
+          <div>
+            {% for question in questions %}
+            <ul>{{question}}               
+              
+            <a href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}" name="delete_question">Delete</a>
+           
+            </ul>
+            {% endfor %}
+          </div>
+        </div>
+        <div>
+          {{question_form}}
         </div>
       </div>
-      <div>
-        <div>
-          <label>Question 1:</label>
-          <input
-            type="text"
-            name="question1"
-            class="question-field"
-            value="Favorite place"
-            required
-          />
-        </div>
-        <div>
-          <label>Question 2:</label>
-          <input
-            type="text"
-            name="question2"
-            class="question-field"
-            value="Strength"
-            required
-          />
-        </div>
-        <div>
-          <label>Question 3:</label>
-          <input
-            type="text"
-            name="question3"
-            class="question-field"
-            value="Weakness"
-            required
-          />
-        </div>
-        <div>
-          <label>Question 4:</label>
-          <input
-            type="text"
-            name="question4"
-            class="question-field"
-            value="Biggest dream"
-            required
-          />
-        </div>
-        <div>
-          <label>Question 5:</label>
-          <input
-            type="text"
-            name="question5"
-            class="question-field"
-            value="Favorite movie"
-            required
-          />
-        </div>
-      </div>
-      <div
-        style="
+        <div style="
           width: 200px;
           display: flex;
           align-items: center;
-          justify-content: space-around;
-        "
-      >
+          justify-content: space-around;">
         <a href="{% url 'index' %}" style="text-decoration: none; color: white"
-          >Back</a
-        >
-        <button type="submit" class="CreateButton">Create</button>
+          >Back</a>
+        <button type="submit" class="CreateButton" name="add_question">Add question</button>
+
+        <button type="submit" class="CreateButton" name="create">Create</button>
       </div>
     </form>
   </body>
