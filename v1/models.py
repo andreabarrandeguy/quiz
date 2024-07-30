@@ -6,6 +6,10 @@ class Room(models.Model):
     user_name = models.CharField(max_length=100) # SENDER/Creator of form
     other_person_name = models.CharField(max_length=100) #RECEIVER of form
 
+class TemporaryQuestion(models.Model):
+    room_id=models.UUIDField(default=uuid.uuid4)
+    question=models.CharField(max_length=255)
+
 class Question(models.Model):
     question_id = models.AutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE) # Links to "id" from Room above
@@ -14,3 +18,7 @@ class Question(models.Model):
     self_b = models.CharField(max_length=255, null=True, blank=True) # RECEIVER about themselves
     other_a = models.CharField(max_length=255, null=True, blank=True) # SENDER about RECEIVER
     other_b = models.CharField(max_length=255, null=True, blank=True) # RECEIVER about SENDER
+
+class shortURL(models.Model):
+    short_url = models.CharField(max_length=8, unique=True)
+    long_url = models.URLField()
