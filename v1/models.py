@@ -18,3 +18,7 @@ class Question(models.Model):
     self_b = models.CharField(max_length=255, null=True, blank=True) # RECEIVER about themselves
     other_a = models.CharField(max_length=255, null=True, blank=True) # SENDER about RECEIVER
     other_b = models.CharField(max_length=255, null=True, blank=True) # RECEIVER about SENDER
+
+class shortURL(models.Model):
+    short_url = models.CharField(max_length=8, unique=True)
+    long_url = models.URLField()

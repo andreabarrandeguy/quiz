@@ -27,7 +27,7 @@
             {% for question in questions %}
             <ul>{{question}}               
               
-            <a href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}" name="delete_question">Delete</a>
+            <a href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}">Delete</a>
            
             </ul>
             {% endfor %}

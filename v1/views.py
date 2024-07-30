@@ -1,12 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Room, Question, TemporaryQuestion
+
+#from v1.utils import shorten_url
+from .models import Room, Question, TemporaryQuestion, shortURL
 from .forms import NewQuestionForm, NewRoomForm
 import uuid
+from .utils import shorten_url
 
 def index(request):
     return render(request, 'v1/index.html')
 
-def create(request):
+def create(request): 
 
     if 'room_data' not in request.session:
         request.session['room_data'] = {}
@@ -86,7 +89,15 @@ def sender(request, room_id, sender):
     room = get_object_or_404(Room, id=room_id)
     questions = Question.objects.filter(room=room)
     receiver = room.other_person_name #Receiver wasn't specified
-    return render(request, 'v1/sender.html', {'room_id': room.id, 'sender': sender, 'questions': questions, 'receiver': receiver}) #Change 'room_id':room_id for 'room_id':room.id #ACA MODIFIQUE
+    long_url=f'/{room_id}/share/{receiver}/'
+    short_url=shorten_url(request, long_url)
+    return render(request, 'v1/sender.html', {
+        'room_id': room.id, 
+        'sender': sender, 
+        'questions': questions, 
+        'receiver': receiver,
+        'short_url':short_url
+        }) #Change 'room_id':room_id for 'room_id':room.id #ACA MODIFIQUE
 
 def receiver(request, room_id, receiver):
     # After form is submitted
@@ -118,3 +129,7 @@ def room(request, room_id):
     receiver = room.other_person_name
     questions = Question.objects.filter(room=room)
     return render(request, 'v1/room.html', {'room_id': room_id, 'questions': questions, 'sender': sender, 'receiver': receiver})
+
+def redirect_short_url(request, short_url):
+    short_url_instance = get_object_or_404(shortURL, short_url=short_url)
+    return redirect(short_url_instance.long_url)
