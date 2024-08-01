@@ -7,4 +7,5 @@ urlpatterns = [
     path('<uuid:room_id>/<str:sender>/', views.sender, name='sender'), # Path for SENDER/Creator of room
     path('<uuid:room_id>/share/<str:receiver>/', views.receiver, name='receiver'), # Path for RECEIVER of room
     path('<uuid:room_id>/', views.room, name='room'), # View room
+    path('s/<str:short_url>/', views.redirect_short_url, name='redirect_short_url'),
 ]
