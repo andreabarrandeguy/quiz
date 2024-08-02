@@ -17,35 +17,49 @@
     />
   </head>
   <body>
-    <h1>Create Room</h1>
+    <div>
+      <h1>Create Room</h1>
+      <h2>
+        Is there someone you think you know the most/knows you the most? Let's
+        test it!
+      </h2>
+    </div>
+    <h3>Fill in your data and create some questions about both of you</h3>
     <form method="post" action="{% url 'create' %}">
       {% csrf_token %}
       <div class="inputNames">
-        {{room_form}}
-        </div>
-          <div>
-            {% for question in questions %}
-            <ul>{{question}}               
-              
-            <a href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}">Delete</a>
-           
-            </ul>
-            {% endfor %}
-          </div>
-        </div>
-        <div>
-          {{question_form}}
-        </div>
+        <div class="inputNames_field">{{ room_form.user_name }}</div>
+        <div class="inputNames_field">{{ room_form.other_person_name }}</div>
       </div>
-        <div style="
+      <div class="inputQuestions">
+        <div>{{ question_form.question }}</div>
+        <button type="submit" class="CreateButton" name="add_question">
+          Add question
+        </button>
+      </div>
+      <div>
+        {% for question in questions %}
+        <ul>
+          {{question}}
+
+          <a href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
+            >Delete</a
+          >
+        </ul>
+        {% endfor %}
+      </div>
+
+      <div
+        style="
           width: 200px;
           display: flex;
           align-items: center;
-          justify-content: space-around;">
+          justify-content: space-around;
+        "
+      >
         <a href="{% url 'index' %}" style="text-decoration: none; color: white"
-          >Back</a>
-        <button type="submit" class="CreateButton" name="add_question">Add question</button>
-
+          >Back</a
+        >
         <button type="submit" class="CreateButton" name="create">Create</button>
       </div>
     </form>

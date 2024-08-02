@@ -22,12 +22,24 @@
       <h1>Mistery Exchange</h1>
     </div>
     <div>
-      <button
-        onclick="window.location.href='{% url 'create' %}'"
-        class="indexCreateButton"
-      >
+      <button class="indexCreateButton" id="createRoomButton">
         Create new Room
       </button>
+      <div id="circleAnimation" class="circle-animation"></div>
     </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        var button = document.getElementById("createRoomButton");
+        var circle = document.getElementById("circleAnimation");
+        var redirectUrl = '{% url "create" %}'; // Store URL in variable
+
+        button.addEventListener("click", function () {
+          circle.classList.add("animate");
+          setTimeout(function () {
+            window.location.href = redirectUrl; // Redirect after animation
+          }, 500); // Match the duration of the CSS animation
+        });
+      });
+    </script>
   </body>
 </html>

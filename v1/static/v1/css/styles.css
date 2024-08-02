@@ -24,6 +24,9 @@ h1 {
 
 h2 {
   text-align: center;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: white;
 }
 
 form {
@@ -36,16 +39,9 @@ form div {
   margin: 10px 0;
 }
 
-input[type="text"] {
-  width: 300px;
-  padding: 10px;
-  margin: 10px 0;
-  box-sizing: border-box;
-}
-
 .question-field {
-  width: 300px; /* Ensure question fields are the same size */
-  height: 30px; /* Adjust the height if necessary */
+  width: 300px;
+  height: 30px;
   padding: 5px;
 }
 
@@ -79,13 +75,24 @@ th {
 .inputNames {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  width: 60vw;
+}
+
+.inputNames_field {
+  margin: 5px;
+}
+
+form .question-input {
+  width: 500px;
+  margin-right: 10px;
 }
 
 .CreateButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   background-color: white;
+  margin-left: 10px;
 }
 
 .CreateButton:hover {

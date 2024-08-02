@@ -1,0 +1,109 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: #0f0f0f;
+  color: white;
+  text-align: center;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+h1 {
+  text-align: center;
+  font-family: "Lustria", serif;
+  font-weight: 400;
+  font-size: 3rem;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+form div {
+  margin: 10px 0;
+}
+
+input[type="text"] {
+  width: 300px;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+}
+
+.question-field {
+  width: 300px; /* Ensure question fields are the same size */
+  height: 30px; /* Adjust the height if necessary */
+  padding: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.results {
+  width: 90dvw;
+  align-self: center;
+}
+
+th {
+  color: black;
+}
+
+/*Index*/
+.indexCreateButton {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-size: 1.25rem;
+  background-color: white;
+}
+
+.indexCreateButton:hover {
+  opacity: 0.75;
+}
+
+/*Create*/
+.inputNames {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.CreateButton {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: white;
+}
+
+.CreateButton:hover {
+  opacity: 0.75;
+}
+
+/*Room*/
+.createNew {
+  text-decoration: none;
+  color: black;
+  background-color: white;
+  width: 150px;
+  height: 40px;
+  align-self: center;
+  align-content: center;
+  border-radius: 10px;
+}
+
+.createNew:hover {
+  opacity: 0.75;
+}

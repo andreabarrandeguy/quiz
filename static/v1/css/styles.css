@@ -13,6 +13,9 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 h1 {
@@ -24,6 +27,8 @@ h1 {
 
 h2 {
   text-align: center;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
 }
 
 form {
@@ -34,19 +39,6 @@ form {
 
 form div {
   margin: 10px 0;
-}
-
-input[type="text"] {
-  width: 300px;
-  padding: 10px;
-  margin: 10px 0;
-  box-sizing: border-box;
-}
-
-.question-field {
-  width: 300px; /* Ensure question fields are the same size */
-  height: 30px; /* Adjust the height if necessary */
-  padding: 5px;
 }
 
 button {
@@ -69,23 +61,76 @@ th {
   font-weight: 400;
   font-size: 1.25rem;
   background-color: white;
+  position: relative;
+  z-index: 1;
 }
 
 .indexCreateButton:hover {
   opacity: 0.75;
 }
 
+.circle-animation {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
+  z-index: 9999; /* Ensure it is above other content */
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  backdrop-filter: blur(10px); /* Apply blur effect */
+}
+
+@keyframes expandCircle {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  100% {
+    width: 200vw;
+    height: 200vh;
+  }
+}
+
+.animate {
+  animation: expandCircle 0.5s ease forwards; /* Apply keyframes animation */
+}
+
 /*Create*/
 .inputNames {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: space-between;
+  width: 610px;
+}
+
+.inputNames_field {
+  width: 300px;
+  height: 30px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+form .question-input {
+  height: 30px;
+  width: 475px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.inputQuestions {
+  display: flex;
+  align-items: center;
+  width: 610px;
 }
 
 .CreateButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   background-color: white;
+  margin-left: 10px;
 }
 
 .CreateButton:hover {
