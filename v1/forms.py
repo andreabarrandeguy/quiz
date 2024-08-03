@@ -10,10 +10,15 @@ class NewRoomForm(forms.ModelForm):
     other_person_name=forms.CharField(max_length=255, label=False, widget=forms.TextInput(attrs={
         'placeholder':'Who will receive this?',
         'class': 'inputNames_field'}))
-
+    sender_email=forms.EmailField(max_length=255, label=False, widget=forms.EmailInput(attrs={
+        'placeholder':'Your mail',
+        'class': 'inputNames_field'}))
+    receiver_email=forms.EmailField(max_length=255, label=False, widget=forms.EmailInput(attrs={
+        'placeholder':'Receiver mail',
+        'class': 'inputNames_field'}))
     class Meta:
         model=Room
-        fields=['user_name', 'other_person_name']
+        fields=['user_name', 'other_person_name', 'sender_email', 'receiver_email']
 
 
 class NewQuestionForm(forms.ModelForm):

@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Room, Question, TemporaryQuestion, shortURL
 from .forms import NewQuestionForm, NewRoomForm
 import uuid
-from .utils import shorten_url
+from .utils import shorten_url, SendEmail
 
 def index(request):
     return render(request, 'v1/index.html')
@@ -40,6 +40,8 @@ def create(request):
             room_data = {
                 'user_name': request.POST.get('user_name', ''),
                 'other_person_name': request.POST.get('other_person_name', ''),
+                'sender_email': request.POST.get('sender_email', ''),
+                'receiver_email': request.POST.get('receiver_email', '')
             }
             request.session['room_data'] = room_data
             room_form = NewRoomForm(initial=room_data) #Conserve sender and receiver names within form
@@ -91,6 +93,8 @@ def sender(request, room_id, sender):
     receiver = room.other_person_name #Receiver wasn't specified
     long_url=f'/{room_id}/share/{receiver}/'
     short_url=shorten_url(request, long_url)
+    receiver_email = room.receiver_email
+    SendEmail(request, receiver_email, room.id, room.user_name)
     return render(request, 'v1/sender.html', {
         'room_id': room.id, 
         'sender': sender, 

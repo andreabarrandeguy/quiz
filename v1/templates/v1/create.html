@@ -29,7 +29,11 @@
       {% csrf_token %}
       <div class="inputNames">
         <div class="inputNames_field">{{ room_form.user_name }}</div>
+        <div class="inputNames_field">{{ room_form.sender_email }}</div>
+      </div>
+      <div class="inputNames">
         <div class="inputNames_field">{{ room_form.other_person_name }}</div>
+        <div class="inputNames_field">{{ room_form.receiver_email }}</div>
       </div>
       <div class="inputQuestions">
         <div>{{ question_form.question }}</div>
