@@ -101,7 +101,7 @@ def sender(request, room_id, sender):
         'questions': questions, 
         'receiver': receiver,
         'short_url':short_url
-        }) #Change 'room_id':room_id for 'room_id':room.id #ACA MODIFIQUE
+        })
 
 def receiver(request, room_id, receiver):
     # After form is submitted
