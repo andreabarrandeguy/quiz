@@ -1,6 +1,8 @@
 import hashlib
 import base64
 from .models import shortURL
+from django.core.mail import send_mail
+from django.conf import settings
 
 def shorten_url(request, long_url):
     
@@ -21,3 +23,17 @@ def shorten_url(request, long_url):
     )
 
     return short_url_instance.short_url
+
+
+def SendEmail(request, receiver_email, room_id, sender):
+
+    long_url = f"/{room_id}/"
+    short_key = shorten_url(request, long_url) 
+    short_url = f"{request.scheme}://{request.get_host()}/s/{short_key}"
+
+    subject = 'New room created'
+    message = f'Hi! {sender} has created a new room for you, please click the following link:  {short_url}'
+    email_from = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [receiver_email]
+    
+    send_mail(subject, message, email_from, recipient_list)

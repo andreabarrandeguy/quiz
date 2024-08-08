@@ -27,7 +27,7 @@ h1 {
 
 h2 {
   text-align: center;
-  font-family: "Lato", sans-serif;
+  font-family: "Lustria", serif;
   font-weight: 400;
 }
 
@@ -63,6 +63,8 @@ th {
   background-color: white;
   position: relative;
   z-index: 1;
+  border: none;
+  border-radius: 15px;
 }
 
 .indexCreateButton:hover {
@@ -71,8 +73,8 @@ th {
 
 .circle-animation {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 34%;
+  left: 49%;
   width: 0;
   height: 0;
   border-radius: 50%;
@@ -99,23 +101,46 @@ th {
 }
 
 /*Create*/
+
+.bodyCreate {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: #0f0f0f;
+  color: white;
+  text-align: center;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 0;
+  overflow: hidden;
+  position: relative;
+}
+
 .inputNames {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
   width: 610px;
+  flex-direction: column;
+  height: 70px;
+  justify-content: space-between;
 }
 
 .inputNames_field {
-  width: 300px;
+  width: 290px;
   height: 30px;
   text-align: center;
   border-radius: 10px;
+  margin: 0;
+}
+
+.inputNames_field input {
+  font-size: 1rem;
 }
 
 form .question-input {
-  height: 30px;
-  width: 475px;
+  height: 33px;
+  width: 445px;
   text-align: center;
   border-radius: 10px;
 }
@@ -124,13 +149,73 @@ form .question-input {
   display: flex;
   align-items: center;
   width: 610px;
+  justify-content: space-between;
+}
+
+.randomButton {
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  height: fit-content;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+  cursor: pointer; /* Optional: for better UX */
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
 }
 
 .CreateButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   background-color: white;
-  margin-left: 10px;
+  border: none;
+  border-radius: 15px;
+}
+
+.CreateButtonFinal {
+  color: white;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+  cursor: pointer;
+}
+
+.deleteButton {
+  color: white;
+  background-color: grey;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  height: fit-content;
+}
+
+.deleteButton:hover {
+  background-color: red;
 }
 
 .CreateButton:hover {
