@@ -101,7 +101,6 @@ th {
 }
 
 /*Create*/
-
 .bodyCreate {
   font-family: "Lato", sans-serif;
   font-weight: 400;
@@ -189,6 +188,21 @@ form .question-input {
   border-radius: 15px;
 }
 
+.CreateButton.red {
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+  cursor: pointer; /* Optional: for better UX */
+}
+
 .CreateButtonFinal {
   color: white;
   background: linear-gradient(
@@ -222,7 +236,42 @@ form .question-input {
   opacity: 0.75;
 }
 
+/*Sender*/
+.senderAnswers {
+  display: flex;
+  justify-content: space-around;
+  width: 70vw;
+}
+
+.senderAnswers_answer {
+  width: 45%;
+}
+
+.senderAnswers_answer ul {
+  width: 100%;
+}
+
+.senderAnswers_answer ul li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
 /*Room*/
+.hidden {
+  display: none;
+}
+.message {
+  text-align: center;
+  font-size: 18px;
+  color: #ff0000; /* Red color for the message */
+  margin: 20px;
+}
+
 .createNew {
   text-decoration: none;
   color: black;

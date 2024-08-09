@@ -34,6 +34,12 @@
   </head>
   <body>
     <h1>Room ID: {{ room_id }}</h1>
+    <div id="messageSender" class="message hidden">
+      Come back later, {{ sender }} still hasn't reply
+    </div>
+    <div id="messageReceiver" class="message hidden">
+      Come back later, {{ receiver }} still hasn't reply
+    </div>
 
     <table class="results">
       <tr>
@@ -44,8 +50,8 @@
       {% for question in questions %}
       <tr>
         <td>{{ question.question }}</td>
-        <td>{{ question.self_a }}</td>
-        <td>{{ question.other_b }}</td>
+        <td class="self_a">{{ question.self_a }}</td>
+        <td class="other_b">{{ question.other_b }}</td>
       </tr>
       {% endfor %}
     </table>
@@ -59,11 +65,59 @@
       {% for question in questions %}
       <tr>
         <td>{{ question.question }}</td>
-        <td>{{ question.self_b }}</td>
-        <td>{{ question.other_a }}</td>
+        <td class="self_b">{{ question.self_b }}</td>
+        <td class="other_a">{{ question.other_a }}</td>
       </tr>
       {% endfor %}
     </table>
     <a href="{% url 'create' %}" class="createNew">Create a new one!</a>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Function to check placeholders and show/hide content
+        function checkPlaceholders() {
+          const selfA = document.querySelectorAll(".self_a");
+          const selfB = document.querySelectorAll(".self_b");
+          let selfAEmpty = false;
+          let selfBEmpty = false;
+
+          selfA.forEach((element) => {
+            if (element.textContent.trim() === "None") {
+              selfAEmpty = true;
+            }
+          });
+
+          selfB.forEach((element) => {
+            if (element.textContent.trim() === "None") {
+              selfBEmpty = true;
+            }
+          });
+
+          const messageSender = document.getElementById("messageSender");
+          const messageReceiver = document.getElementById("messageReceiver");
+
+          if (selfAEmpty) {
+            document.querySelectorAll(".results").forEach((table) => {
+              table.classList.add("hidden");
+            });
+            document.getElementById("messageSender").classList.remove("hidden");
+          } else if (selfBEmpty) {
+            document.querySelectorAll(".results").forEach((table) => {
+              table.classList.add("hidden");
+            });
+            document
+              .getElementById("messageReceiver")
+              .classList.remove("hidden");
+          } else {
+            document.querySelectorAll(".results").forEach((table) => {
+              table.classList.remove("hidden");
+            });
+            document.getElementById("message").classList.add("hidden");
+          }
+        }
+
+        // Run the check on page load
+        checkPlaceholders();
+      });
+    </script>
   </body>
 </html>
