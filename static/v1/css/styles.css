@@ -97,7 +97,7 @@ th {
 }
 
 .animate {
-  animation: expandCircle 0.5s ease forwards; /* Apply keyframes animation */
+  animation: expandCircle 0.3s ease forwards; /* Apply keyframes animation */
 }
 
 /*Create*/
@@ -142,6 +142,8 @@ form .question-input {
   width: 445px;
   text-align: center;
   border-radius: 10px;
+  font-size: 1rem;
+  font-style: italic;
 }
 
 .inputQuestions {
@@ -262,25 +264,52 @@ form .question-input {
 }
 
 /*Room*/
+.roomLogo {
+  height: 200px;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); /* Start at 0 degrees */
+  }
+  100% {
+    transform: rotate(360deg); /* End at 360 degrees */
+  }
+}
+
 .hidden {
   display: none;
 }
 .message {
+  font-family: "Lustria", serif;
+  font-weight: 400;
+  font-size: 1.5rem;
   text-align: center;
-  font-size: 18px;
-  color: #ff0000; /* Red color for the message */
+  color: white;
   margin: 20px;
 }
 
 .createNew {
   text-decoration: none;
-  color: black;
-  background-color: white;
+  color: white;
   width: 150px;
   height: 40px;
   align-self: center;
   align-content: center;
   border-radius: 10px;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+  cursor: pointer;
 }
 
 .createNew:hover {

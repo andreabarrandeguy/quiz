@@ -32,13 +32,26 @@
       }
     </style>
   </head>
-  <body>
-    <h1>Room ID: {{ room_id }}</h1>
-    <div id="messageSender" class="message hidden">
-      Come back later, {{ sender }} still hasn't reply
+  <body style="align-items: center">
+    <div style="display: flex; align-items: center; justify-content: center">
+      <img
+        src="{% static 'v1/room.png' %}"
+        style="width: 150px; height: fit-content; margin-right: 10px"
+      />
+      <h1>results</h1>
     </div>
-    <div id="messageReceiver" class="message hidden">
-      Come back later, {{ receiver }} still hasn't reply
+    <div>
+      <img
+        id="roomLogo"
+        class="roomLogo hidden"
+        src="{% static 'v1/logo.png' %}"
+      />
+      <div id="messageSender" class="message hidden">
+        Come back later, {{ sender }} still hasn't reply
+      </div>
+      <div id="messageReceiver" class="message hidden">
+        Come back later, {{ receiver }} still hasn't reply
+      </div>
     </div>
 
     <table class="results">
@@ -70,7 +83,10 @@
       </tr>
       {% endfor %}
     </table>
-    <a href="{% url 'create' %}" class="createNew">Create a new one!</a>
+    <a href="{% url 'create' %}" class="createNew hidden" id="createNewButton"
+      >Create a new one!</a
+    >
+    <a href="" class="createNew hidden" id="reminderButton">Send reminder</a>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         // Function to check placeholders and show/hide content
@@ -92,26 +108,30 @@
             }
           });
 
-          const messageSender = document.getElementById("messageSender");
-          const messageReceiver = document.getElementById("messageReceiver");
-
           if (selfAEmpty) {
             document.querySelectorAll(".results").forEach((table) => {
               table.classList.add("hidden");
             });
+            document.getElementById("createNewButton").classList.add("hidden");
+            document.getElementById("reminderButton").classList.remove("hidden");
             document.getElementById("messageSender").classList.remove("hidden");
+            document.getElementById("roomLogo").classList.remove("hidden");
           } else if (selfBEmpty) {
             document.querySelectorAll(".results").forEach((table) => {
               table.classList.add("hidden");
             });
-            document
-              .getElementById("messageReceiver")
-              .classList.remove("hidden");
+            document.getElementById("createNewButton").classList.add("hidden");
+            document.getElementById("reminderButton").classList.remove("hidden");
+            document.getElementById("messageReceiver").classList.remove("hidden");
+            document.getElementById("roomLogo").classList.remove("hidden");
           } else {
             document.querySelectorAll(".results").forEach((table) => {
               table.classList.remove("hidden");
             });
+            document.getElementById("createNewButton").classList.remove("hidden");
+            document.getElementById("reminderButton").classList.add("hidden");
             document.getElementById("message").classList.add("hidden");
+            document.getElementById("roomLogo").classList.add("hidden");
           }
         }
 

@@ -2,186 +2,208 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lustria&display=swap"
-      rel="stylesheet"
-    />
-    <title>Mistery Exchange | Create Room</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'v1/css/styles.css' %}"
-    />
-    <script
-      src="https://kit.fontawesome.com/858b52eeaa.js"
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body class="bodyCreate">
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lustria&display=swap"
+    rel="stylesheet"
+  />
+  <title>Mistery Exchange | Create Room</title>
+  <link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'v1/css/styles.css' %}"
+  />
+  <script
+    src="https://kit.fontawesome.com/858b52eeaa.js"
+    crossorigin="anonymous"
+  ></script>
+</head>
+<body class="bodyCreate">
+  <div
+    style="
+      display: flex;
+      flex-direction: column;
+      height: 170px;
+      justify-content: space-evenly;
+    "
+  >
     <div
       style="
         display: flex;
-        flex-direction: column;
-        height: 170px;
-        justify-content: space-evenly;
+        align-items: center;
+        justify-content: center;
+        margin-top: 30px;
       "
     >
+      <h1>Create</h1>
+      <img
+        src="{% static 'v1/room.png' %}"
+        style="width: 150px; height: fit-content; margin-left: 10px"
+      />
+    </div>
+    <ol style="color: grey">
+      <li>1. Enter your name and email address</li>
+      <li>
+        2. Enter the name of who you will be sharing this room with, and their
+        email address
+      </li>
+      <li>3. Create questions for both of you to answer</li>
+    </ol>
+  </div>
+  <form method="post" action="{% url 'create' %}">
+    {% csrf_token %}
+    <div style="display: flex; width: 610px; justify-content: space-between">
+      <div class="inputNames">
+        <div class="inputNames_field">{{ room_form.user_name }}</div>
+        <div class="inputNames_field">{{ room_form.sender_email }}</div>
+      </div>
+      <div class="inputNames" style="align-items: flex-end">
+        <div class="inputNames_field">{{ room_form.other_person_name }}</div>
+        <div class="inputNames_field">{{ room_form.receiver_email }}</div>
+      </div>
+    </div>
+    <div class="inputQuestions" id="inputQuestions">
+      <div>{{ question_form.question }}</div>
+      <button type="button" class="randomButton" id="randomButton">
+        <i class="fa-solid fa-shuffle"></i>
+      </button>
+      <button
+        type="submit"
+        class="CreateButton"
+        name="add_question"
+        id="addQuestionButton"
+      >
+        Add question
+      </button>
+    </div>
+    <div style="width: 510px; display: flex; flex-direction: column">
+      {% for question in questions %}
       <div
         style="
           display: flex;
           align-items: center;
-          justify-content: center;
-          margin-top: 30px;
+          width: 100%;
+          justify-content: space-between;
         "
       >
-        <h1>Create</h1>
-        <img
-          src="{% static 'v1/room.png' %}"
-          style="width: 150px; height: fit-content; margin-left: 10px"
-        />
-      </div>
-      <ol style="color: grey">
-        <li>1. Enter your name and email address</li>
-        <li>
-          2. Enter the name of who you will be sharing this room with, and their
-          email address
-        </li>
-        <li>3. Create questions for both of you to answer</li>
-      </ol>
-    </div>
-    <form method="post" action="{% url 'create' %}">
-      {% csrf_token %}
-      <div style="display: flex; width: 610px; justify-content: space-between">
-        <div class="inputNames">
-          <div class="inputNames_field">{{ room_form.user_name }}</div>
-          <div class="inputNames_field">{{ room_form.sender_email }}</div>
-        </div>
-        <div class="inputNames" style="align-items: flex-end">
-          <div class="inputNames_field">{{ room_form.other_person_name }}</div>
-          <div class="inputNames_field">{{ room_form.receiver_email }}</div>
-        </div>
-      </div>
-      <div class="inputQuestions" id="inputQuestions">
-        <div>{{ question_form.question }}</div>
-        <button type="submit" class="randomButton" name="random_button">
-          <i class="fa-solid fa-shuffle"></i>
-        </button>
-        <button
-          type="submit"
-          class="CreateButton"
-          name="add_question"
-          id="addQuestionButton"
-        >
-          Add question
-        </button>
-      </div>
-      <div style="width: 510px; display: flex; flex-direction: column">
-        {% for question in questions %}
-        <div
+        <ul
           style="
-            display: flex;
-            align-items: center;
-            width: 100%;
-            justify-content: space-between;
+            width: 465px;
+            align-content: center;
+            background-color: darkgray;
+            color: black;
+            height: 100%;
+            border-radius: 10px;
           "
         >
-          <ul
-            style="
-              width: 465px;
-              align-content: center;
-              background-color: darkgray;
-              color: black;
-              height: 100%;
-              border-radius: 10px;
-            "
-          >
-            {{question}}
-          </ul>
-          <a
-            class="deleteButton"
-            href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
-            ><i class="fa-solid fa-trash"></i
-          ></a>
-        </div>
-        {% endfor %}
+          {{question}}
+        </ul>
+        <a
+          class="deleteButton"
+          href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
+          ><i class="fa-solid fa-trash"></i
+        ></a>
       </div>
+      {% endfor %}
+    </div>
 
-      <div
-        style="
-          width: 200px;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-        "
+    <div
+      style="
+        width: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+      "
+    >
+      <a href="{% url 'index' %}" style="text-decoration: none; color: white"
+        >Back</a
       >
-        <a href="{% url 'index' %}" style="text-decoration: none; color: white"
-          >Back</a
-        >
-        <button
-          type="submit"
-          class="CreateButton"
-          name="create"
-          id="createRoom"
-        >
-          Create
-        </button>
-      </div>
-      <input type="hidden" id="has_questions" value="{{ questions|length }}" />
-    </form>
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const addQuestionButton = document.getElementById("addQuestionButton");
-        const questionInput = document.getElementById("id_question");
-        const hasQuestionsElement = document.getElementById("has_questions");
-        const inputQuestions = document.getElementById("inputQuestions");
-        const createRoomButton = document.getElementById("createRoom");
+      <button
+        type="submit"
+        class="CreateButton"
+        name="create"
+        id="createRoom"
+      >
+        Create
+      </button>
+    </div>
+    <input type="hidden" id="has_questions" value="{{ questions|length }}" />
+  </form>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const addQuestionButton = document.getElementById("addQuestionButton");
+      const questionInput = document.querySelector("[name='question']");
+      const hasQuestionsElement = document.getElementById("has_questions");
+      const inputQuestions = document.getElementById("inputQuestions");
+      const createRoomButton = document.getElementById("createRoom");
+      const randomButton = document.getElementById("randomButton");
 
-        // Function to update the display based on question count
-        function updateQuestionCount() {
-          const hasQuestions = parseInt(hasQuestionsElement.value, 10);
-          if (hasQuestions > 4) {
-            inputQuestions.style.display = "none";
-            createRoomButton.classList.add("CreateButtonFinal");
-          } else {
-            inputQuestions.style.display = "flex";
-            createRoomButton.classList.remove("CreateButtonFinal");
-          }
+      // Define the list of random questions
+      const questionsList = [
+        "What is your favorite book?",
+        "If you could visit any place in the world, where would you go?",
+        "What is the most memorable trip you've ever taken?",
+        "What hobby would you like to pick up if you had more time?",
+        "Who is someone you admire and why?",
+        "What is a skill you'd like to learn and why?",
+        "What is your favorite movie and why?",
+        "If you could have dinner with any historical figure, who would it be?",
+        "What is your go-to comfort food?",
+        "What was the last book you read and enjoyed?"
+      ];
+
+      // Function to update the display based on question count
+      function updateQuestionCount() {
+        const hasQuestions = parseInt(hasQuestionsElement.value, 10);
+        if (hasQuestions > 4) {
+          inputQuestions.style.display = "none";
+          createRoomButton.classList.add("CreateButtonFinal");
+        } else {
+          inputQuestions.style.display = "flex";
+          createRoomButton.classList.remove("CreateButtonFinal");
+        }
+      }
+
+      // Initial check on page load
+      updateQuestionCount();
+
+      // Handle question addition
+      addQuestionButton.addEventListener("click", function (event) {
+        const questionText = questionInput.value.trim();
+        if (questionText === "") {
+          alert("Please enter a question before adding");
+          event.preventDefault();
+          return;
         }
 
-        // Initial check on page load
+        // Increment the hidden field value
+        let hasQuestions = parseInt(hasQuestionsElement.value, 10);
+        hasQuestions++;
+        hasQuestionsElement.value = hasQuestions;
+
         updateQuestionCount();
-
-        // Handle question addition
-        addQuestionButton.addEventListener("click", function (event) {
-          const questionText = questionInput.value.trim();
-          if (questionText === "") {
-            alert("Please enter a question before adding");
-            event.preventDefault();
-            return;
-          }
-
-          // Increment the hidden field value
-          let hasQuestions = parseInt(hasQuestionsElement.value, 10);
-          hasQuestions++;
-          hasQuestionsElement.value = hasQuestions;
-
-          updateQuestionCount();
-        });
-
-        // Handle form submission
-        const form = document.querySelector("form");
-        form.addEventListener("submit", function (event) {
-          const hasQuestions = parseInt(hasQuestionsElement.value, 10);
-          if (hasQuestions < 1) {
-            alert("You must at least add one question to create a room");
-            event.preventDefault(); // Prevent form submission
-            return;
-          }
-        });
       });
-    </script>
-  </body>
+
+      // Handle random question generation
+      randomButton.addEventListener("click", function () {
+        const randomIndex = Math.floor(Math.random() * questionsList.length);
+        const randomQuestion = questionsList[randomIndex];
+        questionInput.value = randomQuestion; // Populate the question input
+      });
+
+      // Handle form submission
+      const form = document.querySelector("form");
+      form.addEventListener("submit", function (event) {
+        const hasQuestions = parseInt(hasQuestionsElement.value, 10);
+        if (hasQuestions < 1) {
+          alert("You must at least add one question to create a room");
+          event.preventDefault(); // Prevent form submission
+          return;
+        }
+      });
+    });
+  </script>
+</body>
 </html>

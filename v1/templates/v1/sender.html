@@ -17,15 +17,12 @@
     />
   </head>
   <body style="align-items: center;">
-    <div>
-      <div style="display: flex; align-items: center; justify-content: center;">
-        <img
-        src="{% static 'v1/room.png' %}"
-        style="width: 150px; height: fit-content; margin-right: 10px"
-      />
-        <h1>created!</h1>
-      </div>
-      <p>Room ID: {{ room_id }}</p>
+    <div style="display: flex; align-items: center; justify-content: center;">
+      <img
+      src="{% static 'v1/room.png' %}"
+      style="width: 150px; height: fit-content; margin-right: 10px"
+    />
+      <h1>created!</h1>
     </div>
     <div>
       <h2>{{ sender }}, please make sure to share the below link with {{ receiver }}</h2>
