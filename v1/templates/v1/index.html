@@ -1,45 +1,31 @@
-{% load static %}
+{% extends "v1/layout.html" %} {% load static %} {% block title %} Room 
+{% endblock %} {% block body %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lustria&display=swap"
-      rel="stylesheet"
-    />
-    <title>Mistery Exchange</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'v1/css/styles.css' %}"
-    />
-  </head>
-  <body>
-    <div>
-      <img src="{% static 'v1/room.png' %}" style="width: 500px" />
-      <h2>Discover How Well You Know Each Other</h2>
-    </div>
-    <div>
-      <button class="indexCreateButton" id="createRoomButton">
-        Create new Room
-      </button>
-      <div id="circleAnimation" class="circle-animation"></div>
-    </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var button = document.getElementById("createRoomButton");
-        var circle = document.getElementById("circleAnimation");
-        var redirectUrl = '{% url "create" %}'; // Store URL in variable
+<body>
+  <div>
+    <img src="{% static 'v1/room.png' %}" class="indexLogo"/>
+    <h2>Discover How Well You Know Each Other</h2>
+  </div>
+  <div>
+    <button class="indexCreateButton" id="indexCreateButton">
+      Create new Room
+    </button>
+    <div id="circleAnimation" class="circleAnimation"></div>
+  </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      var indexCreateButton = document.getElementById("indexCreateButton");
+      var circleAnimation = document.getElementById("circleAnimation");
+      var redirectUrl = '{% url "create" %}'; 
 
-        button.addEventListener("click", function () {
-          circle.classList.add("animate");
-          setTimeout(function () {
-            window.location.href = redirectUrl; // Redirect after animation
-          }, 300); // Match the duration of the CSS animation
-        });
+      indexCreateButton.addEventListener("click", function () {
+        circleAnimation.classList.add("animate");
+        setTimeout(function () {
+          window.location.href = redirectUrl; 
+        }, 300); // Match the duration of the CSS animation
       });
-    </script>
-  </body>
-</html>
+    });
+  </script>
+</body>
+
+{% endblock %}

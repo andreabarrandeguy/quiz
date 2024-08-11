@@ -1,143 +1,113 @@
-{% load static %}
+{% extends "v1/layout.html" %} {% load static %} {% block title %} Room | Results
+{% endblock %} {% block body %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Lustria&display=swap"
-      rel="stylesheet"
+<body>
+  <div class="header_title">
+    <img
+      src="{% static 'v1/room.png' %}"
+      class="header_logo_right"
     />
-    <title>Mystery Exchange | Room {{ room_id }}</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'v1/css/styles.css' %}"
+    <h1>results</h1>
+  </div>
+  <div>
+    <img
+      id="roomLogo"
+      class="roomLogo hidden"
+      src="{% static 'v1/logo.png' %}"
     />
-    <style>
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin: 20px 0;
-      }
-      th,
-      td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: center;
-      }
-      th {
-        background-color: #f2f2f2;
-      }
-    </style>
-  </head>
-  <body style="align-items: center">
-    <div style="display: flex; align-items: center; justify-content: center">
-      <img
-        src="{% static 'v1/room.png' %}"
-        style="width: 150px; height: fit-content; margin-right: 10px"
-      />
-      <h1>results</h1>
+    <div id="messageSender" class="message hidden">
+      Come back later, {{ sender }} still hasn't reply
     </div>
-    <div>
-      <img
-        id="roomLogo"
-        class="roomLogo hidden"
-        src="{% static 'v1/logo.png' %}"
-      />
-      <div id="messageSender" class="message hidden">
-        Come back later, {{ sender }} still hasn't reply
-      </div>
-      <div id="messageReceiver" class="message hidden">
-        Come back later, {{ receiver }} still hasn't reply
-      </div>
+    <div id="messageReceiver" class="message hidden">
+      Come back later, {{ receiver }} still hasn't reply
     </div>
+  </div>
 
-    <table class="results">
-      <tr>
-        <th>Question</th>
-        <th>{{ sender }}'s Reply</th>
-        <th>{{ receiver }}'s Reply about {{ sender }}</th>
-      </tr>
-      {% for question in questions %}
-      <tr>
-        <td>{{ question.question }}</td>
-        <td class="self_a">{{ question.self_a }}</td>
-        <td class="other_b">{{ question.other_b }}</td>
-      </tr>
-      {% endfor %}
-    </table>
+  <table class="results">
+    <tr>
+      <th>Question</th>
+      <th>{{ sender }}'s Reply</th>
+      <th>{{ receiver }}'s Reply about {{ sender }}</th>
+    </tr>
+    {% for question in questions %}
+    <tr>
+      <td>{{ question.question }}</td>
+      <td class="self_a">{{ question.self_a }}</td>
+      <td class="other_b">{{ question.other_b }}</td>
+    </tr>
+    {% endfor %}
+  </table>
 
-    <table class="results">
-      <tr>
-        <th>Question</th>
-        <th>{{ receiver }}'s Reply</th>
-        <th>{{ sender }}'s Reply about {{ receiver }}</th>
-      </tr>
-      {% for question in questions %}
-      <tr>
-        <td>{{ question.question }}</td>
-        <td class="self_b">{{ question.self_b }}</td>
-        <td class="other_a">{{ question.other_a }}</td>
-      </tr>
-      {% endfor %}
-    </table>
-    <a href="{% url 'create' %}" class="createNew hidden" id="createNewButton"
-      >Create a new one!</a
-    >
-    <a href="" class="createNew hidden" id="reminderButton">Send reminder</a>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Function to check placeholders and show/hide content
-        function checkPlaceholders() {
-          const selfA = document.querySelectorAll(".self_a");
-          const selfB = document.querySelectorAll(".self_b");
-          let selfAEmpty = false;
-          let selfBEmpty = false;
+  <table class="results">
+    <tr>
+      <th>Question</th>
+      <th>{{ receiver }}'s Reply</th>
+      <th>{{ sender }}'s Reply about {{ receiver }}</th>
+    </tr>
+    {% for question in questions %}
+    <tr>
+      <td>{{ question.question }}</td>
+      <td class="self_b">{{ question.self_b }}</td>
+      <td class="other_a">{{ question.other_a }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <a href="{% url 'create' %}" class="createNew hidden" id="createNewButton"
+    >Create a new one!</a
+  >
+  <a href="" class="createNew hidden" id="reminderButton">Send reminder</a>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      // Function to check placeholders and show/hide content
+      function checkPlaceholders() {
+        const selfA = document.querySelectorAll(".self_a");
+        const selfB = document.querySelectorAll(".self_b");
+        let selfAEmpty = false;
+        let selfBEmpty = false;
 
-          selfA.forEach((element) => {
-            if (element.textContent.trim() === "None") {
-              selfAEmpty = true;
-            }
-          });
-
-          selfB.forEach((element) => {
-            if (element.textContent.trim() === "None") {
-              selfBEmpty = true;
-            }
-          });
-
-          if (selfAEmpty) {
-            document.querySelectorAll(".results").forEach((table) => {
-              table.classList.add("hidden");
-            });
-            document.getElementById("createNewButton").classList.add("hidden");
-            document.getElementById("reminderButton").classList.remove("hidden");
-            document.getElementById("messageSender").classList.remove("hidden");
-            document.getElementById("roomLogo").classList.remove("hidden");
-          } else if (selfBEmpty) {
-            document.querySelectorAll(".results").forEach((table) => {
-              table.classList.add("hidden");
-            });
-            document.getElementById("createNewButton").classList.add("hidden");
-            document.getElementById("reminderButton").classList.remove("hidden");
-            document.getElementById("messageReceiver").classList.remove("hidden");
-            document.getElementById("roomLogo").classList.remove("hidden");
-          } else {
-            document.querySelectorAll(".results").forEach((table) => {
-              table.classList.remove("hidden");
-            });
-            document.getElementById("createNewButton").classList.remove("hidden");
-            document.getElementById("reminderButton").classList.add("hidden");
-            document.getElementById("message").classList.add("hidden");
-            document.getElementById("roomLogo").classList.add("hidden");
+        selfA.forEach((element) => {
+          if (element.textContent.trim() === "None") {
+            selfAEmpty = true;
           }
-        }
+        });
 
-        // Run the check on page load
-        checkPlaceholders();
-      });
-    </script>
-  </body>
-</html>
+        selfB.forEach((element) => {
+          if (element.textContent.trim() === "None") {
+            selfBEmpty = true;
+          }
+        });
+
+        if (selfAEmpty) {
+          document.querySelectorAll(".results").forEach((table) => {
+            table.classList.add("hidden");
+          });
+          document.getElementById("createNewButton").classList.add("hidden");
+          document.getElementById("reminderButton").classList.remove("hidden");
+          document.getElementById("messageSender").classList.remove("hidden");
+          document.getElementById("roomLogo").classList.remove("hidden");
+        } else if (selfBEmpty) {
+          document.querySelectorAll(".results").forEach((table) => {
+            table.classList.add("hidden");
+          });
+          document.getElementById("createNewButton").classList.add("hidden");
+          document.getElementById("reminderButton").classList.remove("hidden");
+          document.getElementById("messageReceiver").classList.remove("hidden");
+          document.getElementById("roomLogo").classList.remove("hidden");
+        } else {
+          document.querySelectorAll(".results").forEach((table) => {
+            table.classList.remove("hidden");
+          });
+          document.getElementById("createNewButton").classList.remove("hidden");
+          document.getElementById("reminderButton").classList.add("hidden");
+          document.getElementById("message").classList.add("hidden");
+          document.getElementById("roomLogo").classList.add("hidden");
+        }
+      }
+
+      // Run the check on page load
+      checkPlaceholders();
+    });
+  </script>
+</body>
+
+{% endblock %}
