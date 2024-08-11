@@ -46,11 +46,23 @@ button {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   font-size: 1.25rem;
-  background-color: white;
   position: relative;
   z-index: 1;
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
+  color: white;
+  height: fit-content;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
 }
 
 .indexCreateButton:hover {
@@ -88,7 +100,12 @@ button {
 
 /*Create*/
 .bodyCreate {
-  justify-content: flex-start;
+  justify-content: space-between;
+}
+
+.bodyCreate_container {
+  display: flex; 
+  flex-direction: column;
 }
 
 .bodyCreate_header {
@@ -96,6 +113,7 @@ button {
   flex-direction: column;
   height: 170px;
   justify-content: space-evenly;
+  margin-bottom: 10px;
 }
 
 .header_title {
@@ -271,6 +289,12 @@ form .question-input {
 
 .CreateButton:hover {
   opacity: 0.75;
+}
+
+.note {
+  font-style: italic;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
 }
 
 /*Sender*/

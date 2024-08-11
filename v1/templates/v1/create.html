@@ -2,75 +2,82 @@
 {% endblock %} {% block body %}
 
 <body class="bodyCreate">
-  <div class="bodyCreate_header">
-    <div class="header_title">
-      <h1>Create</h1>
-      <img
-        src="{% static 'v1/room.png' %}" class="header_logo_left"/>
-    </div>
-    <ol class="bodyCreate_header_text">
-      <li>1. Enter your name and email address</li>
-      <li>
-        2. Enter the name of who you will be sharing this room with, and their
-        email address
-      </li>
-      <li>3. Create questions for both of you to answer</li>
-    </ol>
-  </div>
-  <form method="post" action="{% url 'create' %}">
-    {% csrf_token %}
-    <div class="inputNames_container">
-      <div class="inputNames">
-        <div class="inputNames_field">{{ room_form.user_name }}</div>
-        <div class="inputNames_field">{{ room_form.sender_email }}</div>
+  <div class="bodyCreate_container">
+    <div class="bodyCreate_header">
+      <div class="header_title">
+        <h1>Create</h1>
+        <img
+          src="{% static 'v1/room.png' %}" class="header_logo_left"/>
       </div>
-      <div class="inputNames">
-        <div class="inputNames_field">{{ room_form.other_person_name }}</div>
-        <div class="inputNames_field">{{ room_form.receiver_email }}</div>
+      <ol class="bodyCreate_header_text">
+        <li>1. Enter your name and email address</li>
+        <li>
+          2. Enter the name of who you will be sharing this room with, and their
+          email address
+        </li>
+        <li>3. Create questions for both of you to answer</li>
+        <li>4. Once both of you reply, the answers will be revealed!</li>
+      </ol>
+    </div>
+    <form method="post" action="{% url 'create' %}">
+      {% csrf_token %}
+      <div class="inputNames_container">
+        <div class="inputNames">
+          <div class="inputNames_field">{{ room_form.user_name }}</div>
+          <div class="inputNames_field">{{ room_form.sender_email }}</div>
+        </div>
+        <div class="inputNames">
+          <div class="inputNames_field">{{ room_form.other_person_name }}</div>
+          <div class="inputNames_field">{{ room_form.receiver_email }}</div>
+        </div>
       </div>
-    </div>
-    <div class="inputQuestions" id="inputQuestions">
-      <div>{{ question_form.question }}</div>
-      <button type="button" class="randomButton" id="randomButton">
-        <i class="fa-solid fa-shuffle"></i>
-      </button>
-      <button
-        type="submit"
-        class="CreateButton"
-        name="add_question"
-        id="addQuestionButton"
-      >
-        Add question
-      </button>
-    </div>
-    <div class="questionList">
-      {% for question in questions %}
-      <div class="questionList_question">
-        <ul class="questionList_question_text">
-          {{question}}
-        </ul>
-        <a
-          class="questionList_delete"
-          href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
-          ><i class="fa-solid fa-trash"></i
-        ></a>
+      <div class="inputQuestions" id="inputQuestions">
+        <div>{{ question_form.question }}</div>
+        <button type="button" class="randomButton" id="randomButton" title="Click to get a random question suggestion">
+          <i class="fa-solid fa-shuffle"></i>
+        </button>
+        <button
+          type="submit"
+          class="CreateButton"
+          name="add_question"
+          id="addQuestionButton"
+        >
+          Add question
+        </button>
       </div>
-      {% endfor %}
-    </div>
+      <div class="questionList">
+        {% for question in questions %}
+        <div class="questionList_question">
+          <ul class="questionList_question_text">
+            {{question}}
+          </ul>
+          <a
+            class="questionList_delete"
+            href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
+            ><i class="fa-solid fa-trash"></i
+          ></a>
+        </div>
+        {% endfor %}
+      </div>
 
-    <div class="buttonsContainer">
-      <a href="{% url 'index' %}" class="buttonsContainer_back">Back</a>
-      <button
-        type="submit"
-        class="CreateButton"
-        name="create"
-        id="createRoom"
-      >
-        Create
-      </button>
-    </div>
-    <input type="hidden" id="has_questions" value="{{ questions|length }}" />
-  </form>
+      <div class="buttonsContainer">
+        <a href="{% url 'index' %}" class="buttonsContainer_back">Back</a>
+        <button
+          type="submit"
+          class="CreateButton"
+          name="create"
+          id="createRoom"
+        >
+          Create
+        </button>
+      </div>
+      <input type="hidden" id="has_questions" value="{{ questions|length }}" />
+    </form>
+  </div>
+  <div class="note">
+    <p>Note: Both you and <span style="font-weight: bold;">receiver</span> will get automated emails with your personalized room links to reply or view answers.</p>
+    <p>You will also get a second email when <span style="font-weight: bold;">receiver</span> replies!</p>
+  </div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const addQuestionButton = document.getElementById("addQuestionButton");
