@@ -8,29 +8,28 @@
       class="header_logo_right"
     />
     <h1>results</h1>
-    <p>{{ sender }} sender's view</p>
+    <input type="hidden" id="filter" value="{{ name }}">
   </div>
-
 
   <div class="carousel">
     <div class="carousel-slides">
         {% for question in questions %}
         <div class="carousel-slide">
-            <h1>{{ question.question}}</h1>
+            <h1>{{ question.question}} {{ name }}'s view</h1>
             <div>
               <div>
-                <h2 style="color: black;">{{ receiver }}'s' reply</h2>
+                <h2 style="color: black;">{{ room.other_person_name }}'s' reply</h2>
                 <p>{{ question.self_b }}</p>
               </div>
               <div>
-                <h4 style="color: black; font-weight: 500;">Your guess on {{ receiver }}</h4>
+                <h4 style="color: black; font-weight: 500;">Your guess on {{ room.other_person_name }}</h4>
                 <p>{{ question.other_a }}</p>
               </div>
             </div>
 
             <div>
               <div>
-                <h2 style="color: black;">{{ receiver }}'s' guess on you</h2>
+                <h2 style="color: black;">{{ room.other_person_name }}'s' guess on you</h2>
                 <p>{{ question.other_b }}</p>
               </div>
               <div>
