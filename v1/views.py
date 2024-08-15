@@ -95,11 +95,11 @@ def room2(request, room_id, name):
 
     #IF BOTH COMPLETED REDIRECT TO ROOM
     if completeness['sender_completed'] and completeness['receiver_completed']:
-        return render(request, 'v1/room2.html', {
+        return render(request, 'v1/room.html', {
             'user_sender': user_sender,
             'user_receiver': user_receiver,
             'completeness': completeness,
-            'room_id': room.id,
+            'room': room,
             'questions': questions,
             'name':name
         })
@@ -119,11 +119,11 @@ def room2(request, room_id, name):
             message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
             SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
 
-            return render(request, 'v1/room2.html', {
+            return render(request, 'v1/room.html', {
                 'user_sender': user_sender,
                 'user_receiver': user_receiver,
                 'completeness': completeness,
-                'room_id': room.id,
+                'room': room,
                 'questions': questions,
                 'name':name
                 })
@@ -132,7 +132,7 @@ def room2(request, room_id, name):
         'user_sender': user_sender,
         'user_receiver': user_receiver,
         'completeness': completeness,
-        'room_id': room.id,
+        'room': room,
         'questions': questions,
         'name':name
         })      
@@ -151,11 +151,11 @@ def room2(request, room_id, name):
             message=f'Hi {room.user_name}, {name} has already answered about you. Take a look'
             SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
         
-            return render(request, 'v1/room2.html', {
+            return render(request, 'v1/room.html', {
             'user_sender': user_sender,
             'user_receiver': user_receiver,
             'completeness': completeness,
-            'room_id': room.id,
+            'room': room,
             'questions': questions,
             'name':name
             })
@@ -164,17 +164,17 @@ def room2(request, room_id, name):
         'user_sender': user_sender,
         'user_receiver': user_receiver,
         'completeness': completeness,
-        'room_id': room.id,
+        'room': room,
         'questions': questions,
         'name':name
         })      
         
         
-    return render(request, 'v1/room2.html', {
+    return render(request, 'v1/room.html', {
     'user_sender': user_sender,
     'user_receiver': user_receiver,
     'completeness': completeness,
-    'room_id': room.id,
+    'room': room,
     'questions': questions,
     'name':name
     })
