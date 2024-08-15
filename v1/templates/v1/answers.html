@@ -1,0 +1,12 @@
+{% extends 'v1/layout.html' %}
+
+{% block body %}
+
+    {{user_sender}}/{{user_receiver}}{{completeness}}
+    <p>
+        {% for question in questions %}
+            {{question.question}}
+        {% endfor %}
+    </p> 
+
+{% endblock %}
