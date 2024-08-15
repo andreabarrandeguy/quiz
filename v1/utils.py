@@ -1,6 +1,6 @@
 import hashlib
 import base64
-from .models import shortURL
+from .models import shortURL, Room, Question
 from django.core.mail import send_mail
 from django.conf import settings
 
@@ -25,15 +25,22 @@ def shorten_url(request, long_url):
     return short_url_instance.short_url
 
 
-def SendEmail(request, receiver_email, room_id, sender):
+def SendEmail(request, receiver_email, room_id, sender, subject=None, message=None):
 
-    long_url = f"/{room_id}/"
-    short_key = shorten_url(request, long_url) 
-    short_url = f"{request.scheme}://{request.get_host()}/s/{short_key}"
-
-    subject = 'New room created'
-    message = f'Hi! {sender} has created a new room for you, please click the following link:  {short_url}'
     email_from = settings.DEFAULT_FROM_EMAIL
     recipient_list = [receiver_email]
     
     send_mail(subject, message, email_from, recipient_list)
+
+
+def check_completeness(room_id):
+    
+    try:
+        Room.objects.get(id=room_id)
+    except Room.DoesNotExist:
+        return{'sender_completed':False, 'receiver_completed':False}
+
+    questions=Question.objects.filter(room=room_id)
+    sender_completed=all(q.self_a and q.other_a for q in questions)
+    receiver_completed=all(q.self_b and q.other_b for q in questions)
+    return{'sender_completed':sender_completed, 'receiver_completed':receiver_completed}

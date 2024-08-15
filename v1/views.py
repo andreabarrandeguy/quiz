@@ -1,15 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-
-#from v1.utils import shorten_url
 from .models import Room, Question, TemporaryQuestion, shortURL
 from .forms import NewQuestionForm, NewRoomForm
-import uuid
-from .utils import shorten_url, SendEmail
+import random
+from .utils import shorten_url, SendEmail, check_completeness
 
 def index(request):
     return render(request, 'v1/index.html')
 
-def create(request): 
+def create(request):
 
     if 'room_data' not in request.session:
         request.session['room_data'] = {}
@@ -29,6 +27,7 @@ def create(request):
             temp_questions.pop(question_id)
             request.session['temp_questions'] = temp_questions
             return redirect('create')
+
     
     if request.method == 'POST' and 'add_question' in request.POST:      
         question_form = NewQuestionForm(request.POST)
@@ -72,11 +71,19 @@ def create(request):
 
 
 def sender(request, room_id, sender):
+
+    room = get_object_or_404(Room, id=room_id)
+    questions = Question.objects.filter(room=room)
+    receiver = room.other_person_name #Receiver wasn't specified
+    receiver_email=room.receiver_email
+    long_url=f'/{room_id}/share/{receiver}/'
+    short_url=shorten_url(request, long_url)
+
     # After form is submitted
     if request.method == 'POST':
-        # Obtains room id from url, and its related questions
-        room = get_object_or_404(Room, id=room_id)
-        questions = Question.objects.filter(room=room)
+               
+        questions = Question.objects.filter(room=room)        
+
         # For each question
         for question in questions:
             # SENDER replies about themselves (self_a)
@@ -84,17 +91,33 @@ def sender(request, room_id, sender):
             # SENDER replies about RECEIVER (other_a)
             question.other_a = request.POST.get(f'other_a_{question.question_id}')
             question.save()
-        # Redirects to room page (more in the "room" function)    
+            completeness=check_completeness(room_id)
+            
+        #Notification when sender replies and receiver doesn't. 
+        if completeness['sender_completed'] and not completeness['receiver_completed']:
+            subject= f'{sender} has already answered about you.'
+            message=f'Hi {receiver}, {sender} has already answered about you and waiting for your answers. Here is the link to your questions: {request.scheme}://{request.get_host()}/s/{short_url}' #Receiver gets link to answer
+            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+        elif completeness['sender_completed'] and completeness['receiver_completed']:
+            subject= f'{sender} has already answered about you.'
+            message=f'Hi {receiver}, {sender} has already answered about you. Check out how much you know each other here: ______________' #TODO Receiver gets link to its room
+            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+        
+        # Redirects to room page (more in the "room" function)
         return redirect(f'/{room.id}/')
     
     # if method = "GET", obtains room id, related questions and RECEIVER name to display sender.html template
-    room = get_object_or_404(Room, id=room_id)
-    questions = Question.objects.filter(room=room)
-    receiver = room.other_person_name #Receiver wasn't specified
-    long_url=f'/{room_id}/share/{receiver}/'
-    short_url=shorten_url(request, long_url)
+    
+    subject = f'New room created'
+    message = f'Hi!, {sender} just created a new room with you, please enter this link to answer the questions: {request.scheme}://{request.get_host()}/s/{short_url} '
     receiver_email = room.receiver_email
-    SendEmail(request, receiver_email, room.id, room.user_name)
+    SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+    
+    sender_email = room.sender_email
+    message_sender= f'Hi,{sender}. You have succesfully created a new room, visit {request.scheme}://{request.get_host()}/{room.id}. You will receive a notification when {receiver} answer.'
+    SendEmail(request, sender_email, room.id, room.user_name, subject, message_sender)
+
+    
     return render(request, 'v1/sender.html', {
         'room_id': room.id, 
         'sender': sender, 
