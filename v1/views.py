@@ -70,92 +70,121 @@ def create(request): #blablabla
     })
 
 
-def sender(request, room_id, sender):
+def room2(request, room_id, name):
 
-    room = get_object_or_404(Room, id=room_id)
-    questions = Question.objects.filter(room=room)
-    receiver = room.other_person_name #Receiver wasn't specified
+    room = get_object_or_404(Room, id=room_id) #GET ROOM OBJECTS
+    
+    #BOOLEAN CHECKING IF SENDER OR RECEIVER
+    user_sender = False    
+    user_receiver = False
+    if name == room.user_name:
+        user_sender = True
+    elif name == room.other_person_name:
+        user_receiver = True
+    else:
+        return redirect('error.html')
+
+    #GET QUESTIONS FROM MODEL AND CHECKING IF COMPLETED    
+    questions = Question.objects.filter(room=room)    
+    completeness = check_completeness(room.id)
+
+    #GETS EMAIL ADRESSES
+    sender_email=room.sender_email
     receiver_email=room.receiver_email
-    long_url=f'/{room_id}/share/{receiver}/'
-    short_url=shorten_url(request, long_url)
 
-    # After form is submitted
-    if request.method == 'POST':
-               
-        questions = Question.objects.filter(room=room)        
+    #TODO: INSERTAR LINKS EN CORREOS
 
-        # For each question
-        for question in questions:
-            # SENDER replies about themselves (self_a)
-            question.self_a = request.POST.get(f'self_a_{question.question_id}')
-            # SENDER replies about RECEIVER (other_a)
-            question.other_a = request.POST.get(f'other_a_{question.question_id}')
-            question.save()
-            completeness=check_completeness(room_id)
-            
-        #Notification when sender replies and receiver doesn't. 
-        if completeness['sender_completed'] and not completeness['receiver_completed']:
-            subject= f'{sender} has already answered about you.'
-            message=f'Hi {receiver}, {sender} has already answered about you and waiting for your answers. Here is the link to your questions: {request.scheme}://{request.get_host()}/s/{short_url}' #Receiver gets link to answer
-            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
-        elif completeness['sender_completed'] and completeness['receiver_completed']:
-            subject= f'{sender} has already answered about you.'
-            message=f'Hi {receiver}, {sender} has already answered about you. Check out how much you know each other here: ______________' #TODO Receiver gets link to its room
-            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
-        
-        # Redirects to room page (more in the "room" function)
-        return redirect(f'/{room.id}/')
-    
-    # if method = "GET", obtains room id, related questions and RECEIVER name to display sender.html template
-    
-    subject = f'New room created'
-    message = f'Hi!, {sender} just created a new room with you, please enter this link to answer the questions: {request.scheme}://{request.get_host()}/s/{short_url} '
-    receiver_email = room.receiver_email
-    SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
-    
-    sender_email = room.sender_email
-    message_sender= f'Hi,{sender}. You have succesfully created a new room, visit {request.scheme}://{request.get_host()}/{room.id}. You will receive a notification when {receiver} answer.'
-    SendEmail(request, sender_email, room.id, room.user_name, subject, message_sender)
-
-    
-    return render(request, 'v1/sender.html', {
-        'room_id': room.id, 
-        'sender': sender, 
-        'questions': questions, 
-        'receiver': receiver,
-        'short_url':short_url
+    #IF BOTH COMPLETED REDIRECT TO ROOM
+    if completeness['sender_completed'] and completeness['receiver_completed']:
+        return render(request, 'v1/room2.html', {
+            'user_sender': user_sender,
+            'user_receiver': user_receiver,
+            'completeness': completeness,
+            'room_id': room.id,
+            'questions': questions,
+            'name':name
         })
-
-def receiver(request, room_id, receiver):
-    # After form is submitted
-    if request.method == 'POST':
-        # Obtains room id from url, and its related questions
-        room = get_object_or_404(Room, id=room_id)
-        questions = Question.objects.filter(room=room)
-        # For each question
-        for question in questions:
-            # RECEIVER replies about themselves (self_b)
-            question.self_b = request.POST.get(f'self_b_{question.question_id}')
-            # RECEIVER replies about SENDER (other_b)
-            question.other_b = request.POST.get(f'other_b_{question.question_id}')
-            question.save()
-        # Redirects to room page (more in the "room" function)      
-        return redirect(f'/{room.id}/')
     
-    # if method = "GET", obtains room id, related questions and SENDER name to display receiver.html template
-    room = get_object_or_404(Room, id=room_id)
-    questions = Question.objects.filter(room=room)
-    sender = room.user_name
-    receiver = room.other_person_name
-    return render(request, 'v1/receiver.html', {'room_id': room.id, 'sender': sender, 'questions': questions, 'receiver': receiver}) #'room_id':room_id for 'room_id':room.id
+    if user_sender and not completeness['sender_completed']:
+        if request.method == 'POST':   
+        # For each question
+            for question in questions:
+                # SENDER replies about themselves (self_a)
+                question.self_a = request.POST.get(f'self_a_{question.question_id}')
+                # SENDER replies about RECEIVER (other_a)
+                question.other_a = request.POST.get(f'other_a_{question.question_id}')
+                question.save()
 
-def room(request, room_id):
-    # Obtains room id from url, looks for sender, receiver in model + All questions and answers
-    room = get_object_or_404(Room, id=room_id)
-    sender = room.user_name
-    receiver = room.other_person_name
-    questions = Question.objects.filter(room=room)
-    return render(request, 'v1/room.html', {'room_id': room_id, 'questions': questions, 'sender': sender, 'receiver': receiver})
+            #Notification when sender replies
+            subject= f'{name} has already answered about you.'
+            message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
+            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+
+            return render(request, 'v1/room2.html', {
+                'user_sender': user_sender,
+                'user_receiver': user_receiver,
+                'completeness': completeness,
+                'room_id': room.id,
+                'questions': questions,
+                'name':name
+                })
+            
+        return render(request, 'v1/answers.html', {
+        'user_sender': user_sender,
+        'user_receiver': user_receiver,
+        'completeness': completeness,
+        'room_id': room.id,
+        'questions': questions,
+        'name':name
+        })      
+        
+        
+    if user_receiver and not completeness['receiver_completed']:
+        if request.method == 'POST':
+            for question in questions:
+                # RECEIVER replies about themselves (self_b)
+                question.self_b = request.POST.get(f'self_b_{question.question_id}')
+                # RECEIVER replies about SENDER (other_b)
+                question.other_b = request.POST.get(f'other_b_{question.question_id}')
+                question.save()
+
+            subject= f'{name} has already answered about you.'
+            message=f'Hi {room.user_name}, {name} has already answered about you. Take a look'
+            SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
+        
+            return render(request, 'v1/room2.html', {
+            'user_sender': user_sender,
+            'user_receiver': user_receiver,
+            'completeness': completeness,
+            'room_id': room.id,
+            'questions': questions,
+            'name':name
+            })
+        
+        return render(request, 'v1/answers.html', {
+        'user_sender': user_sender,
+        'user_receiver': user_receiver,
+        'completeness': completeness,
+        'room_id': room.id,
+        'questions': questions,
+        'name':name
+        })      
+        
+        
+    return render(request, 'v1/room2.html', {
+            'user_sender': user_sender,
+            'user_receiver': user_receiver,
+            'completeness': completeness,
+            'room_id': room.id,
+            'questions': questions,
+            'name':name
+            })
+    
+
+def answers(request):
+
+    return render(request, 'v1/answers.html')
+
 
 def redirect_short_url(request, short_url):
     short_url_instance = get_object_or_404(shortURL, short_url=short_url)
