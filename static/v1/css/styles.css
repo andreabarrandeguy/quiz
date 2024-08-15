@@ -348,6 +348,7 @@ form .question-input {
   border-radius: 15px;
   width: 100px; 
   align-self: center;
+  margin-bottom: 15px;
 }
 
 .submitButton.done {
@@ -439,3 +440,106 @@ th {
 .createNew:hover {
   opacity: 0.75;
 }
+
+/*ChatGPT*/
+.carousel-container {
+  position: relative;
+  width: 60vw;
+  overflow: hidden;
+}
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-card {
+  min-width: 97%;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  margin: 0 10px;
+  text-align: center;
+  font-size: 18px;
+  color: black
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 1;
+  background-color: grey;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.carousel-button.prev {
+  left: 20px;
+}
+
+.carousel-button.next {
+  right: 20px;
+}
+
+/*Mio*/
+.carouselContainer {
+  display: flex;
+  width: 60vw;
+  height: 60px;
+  background-color: #ddd;
+  border-radius: 15px;
+  align-items: center;
+}
+.carrouselButton {
+  transform: translateY(-50%);
+  color: white;
+  cursor: pointer;
+  z-index: 1;
+  background-color: grey;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  align-content: center;
+  margin-top: 48px;
+}
+
+.carouselCard {
+  width: inherit;
+  height: inherit;
+  background-color: red;
+}
+
+/*Bootstrap*/
+.carousel-item {
+  background-color: white;
+  height: 60px; /* Set the height to 60px */
+  width: 60px;  /* Set the width to 60px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-content {
+  text-align: center; /* Center the text within the content */
+}
+
+.carousel-caption {
+  color: black; /* Ensure text is visible on a white background */
+  position: static; /* Override default positioning */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+}
+
