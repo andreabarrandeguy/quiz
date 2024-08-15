@@ -7,7 +7,7 @@ from .utils import shorten_url, SendEmail, check_completeness
 def index(request):
     return render(request, 'v1/index.html')
 
-def create(request):
+def create(request): #blablabla
 
     if 'room_data' not in request.session:
         request.session['room_data'] = {}
