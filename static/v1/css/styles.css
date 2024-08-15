@@ -16,6 +16,7 @@ body {
   margin: 0;
   overflow: hidden;
   position: relative;
+  align-items: center;
 }
 
 h1 {
@@ -31,58 +32,59 @@ h2 {
   font-weight: 400;
 }
 
-form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-form div {
-  margin: 10px 0;
-}
-
 button {
   padding: 10px 20px;
   cursor: pointer;
 }
 
-.results {
-  width: 90dvw;
-  align-self: center;
-}
-
-th {
-  color: black;
-}
-
 /*Index*/
+.indexLogo {
+  width: 500px;
+}
+
 .indexCreateButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   font-size: 1.25rem;
-  background-color: white;
   position: relative;
   z-index: 1;
   border: none;
-  border-radius: 15px;
+  border-radius: 10px;
+  color: white;
+  height: fit-content;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
 }
 
 .indexCreateButton:hover {
   opacity: 0.75;
 }
 
-.circle-animation {
+.circleAnimation {
   position: absolute;
   top: 34%;
   left: 49%;
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
-  z-index: 9999; /* Ensure it is above other content */
+  background: rgba(0, 0, 0, 0.5); 
+  z-index: 9999; 
   pointer-events: none;
   transform: translate(-50%, -50%);
-  backdrop-filter: blur(10px); /* Apply blur effect */
+  backdrop-filter: blur(10px); 
+}
+
+.animate {
+  animation: expandCircle 0.3s ease forwards; 
 }
 
 @keyframes expandCircle {
@@ -96,30 +98,61 @@ th {
   }
 }
 
-.animate {
-  animation: expandCircle 0.5s ease forwards; /* Apply keyframes animation */
-}
-
 /*Create*/
 .bodyCreate {
-  font-family: "Lato", sans-serif;
-  font-weight: 400;
-  background-color: #0f0f0f;
-  color: white;
-  text-align: center;
-  height: 100dvh;
+  justify-content: space-between;
+}
+
+.bodyCreate_container {
+  display: flex; 
+  flex-direction: column;
+}
+
+.bodyCreate_header {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  margin: 0;
-  overflow: hidden;
-  position: relative;
+  height: 170px;
+  justify-content: space-evenly;
+  margin-bottom: 10px;
+}
+
+.header_title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.header_logo_left {
+  width: 150px; 
+  height: fit-content; 
+  margin-left: 10px;
+}
+
+.bodyCreate_header_text {
+  color: grey;
+}
+
+.bodyCreate_header_text li {
+  list-style: none;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputNames_container {
+  display: flex; 
+  width: 610px; 
+  justify-content: space-between;
+  margin: 10px 0;
 }
 
 .inputNames {
   display: flex;
   flex-wrap: wrap;
-  width: 610px;
   flex-direction: column;
   height: 70px;
   justify-content: space-between;
@@ -142,6 +175,8 @@ form .question-input {
   width: 445px;
   text-align: center;
   border-radius: 10px;
+  font-size: 1rem;
+  font-style: italic;
 }
 
 .inputQuestions {
@@ -149,6 +184,7 @@ form .question-input {
   align-items: center;
   width: 610px;
   justify-content: space-between;
+  margin: 10px 0;
 }
 
 .randomButton {
@@ -168,7 +204,6 @@ form .question-input {
   );
   background-size: 600% 600%;
   animation: gradientMove 10s linear infinite;
-  cursor: pointer; /* Optional: for better UX */
 }
 
 @keyframes gradientMove {
@@ -188,38 +223,31 @@ form .question-input {
   border-radius: 15px;
 }
 
-.CreateButton.red {
-  background: linear-gradient(
-    to right,
-    #15bc78,
-    #a310a3,
-    #c68825,
-    #5c50de,
-    #ca4d4d,
-    #7d7dc5
-  );
-  background-size: 600% 600%;
-  animation: gradientMove 10s linear infinite;
-  cursor: pointer; /* Optional: for better UX */
+.questionList {
+  width: 510px; 
+  display: flex; 
+  flex-direction: column;
+  margin: 10px 0;
 }
 
-.CreateButtonFinal {
-  color: white;
-  background: linear-gradient(
-    to right,
-    #15bc78,
-    #a310a3,
-    #c68825,
-    #5c50de,
-    #ca4d4d,
-    #7d7dc5
-  );
-  background-size: 600% 600%;
-  animation: gradientMove 10s linear infinite;
-  cursor: pointer;
+.questionList_question {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  margin: 10px 0;
 }
 
-.deleteButton {
+.questionList_question_text {
+  width: 465px;
+  align-content: center;
+  background-color: darkgray;
+  color: black;
+  height: 100%;
+  border-radius: 10px;
+}
+
+.questionList_delete {
   color: white;
   background-color: grey;
   border: none;
@@ -228,19 +256,70 @@ form .question-input {
   height: fit-content;
 }
 
-.deleteButton:hover {
+.questionList_delete:hover {
   background-color: red;
+}
+
+.buttonsContainer {
+  width: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 10px 0;
+}
+
+.buttonsContainer_back {
+  text-decoration: none; 
+  color: white;
+}
+
+.CreateButton.done {
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
 }
 
 .CreateButton:hover {
   opacity: 0.75;
 }
 
+.note {
+  font-style: italic;
+  font-size: 0.8rem;
+  margin-bottom: 15px;
+}
+
 /*Sender*/
+.header_logo_right {
+  width: 150px; 
+  height: fit-content; 
+  margin-right: 10px;
+}
+
+.urlShare {
+  width: 240px; 
+  text-align: center;
+}
+
 .senderAnswers {
   display: flex;
   justify-content: space-around;
   width: 70vw;
+}
+
+.answerInput {
+  height: 40px; 
+  border-radius: 10px; 
+  margin-top: 5px; 
+  text-align: center;
 }
 
 .senderAnswers_answer {
@@ -261,28 +340,206 @@ form .question-input {
   font-style: italic;
 }
 
+.submitButton {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+  width: 100px; 
+  align-self: center;
+  margin-bottom: 15px;
+}
+
+.submitButton.done {
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+}
+
 /*Room*/
+.roomLogo {
+  height: 200px;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg); 
+  }
+  100% {
+    transform: rotate(360deg); 
+  }
+}
+
 .hidden {
   display: none;
 }
+
 .message {
+  font-family: "Lustria", serif;
+  font-weight: 400;
+  font-size: 1.5rem;
   text-align: center;
-  font-size: 18px;
-  color: #ff0000; /* Red color for the message */
+  color: white;
   margin: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  color: black;
+}
+
+.results {
+  width: 90dvw;
+  align-self: center;
 }
 
 .createNew {
   text-decoration: none;
-  color: black;
-  background-color: white;
+  color: white;
   width: 150px;
   height: 40px;
   align-self: center;
   align-content: center;
   border-radius: 10px;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
 }
 
 .createNew:hover {
   opacity: 0.75;
 }
+
+/*ChatGPT*/
+.carousel-container {
+  position: relative;
+  width: 60vw;
+  overflow: hidden;
+}
+
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.carousel-card {
+  min-width: 97%;
+  box-sizing: border-box;
+  padding: 20px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+  margin: 0 10px;
+  text-align: center;
+  font-size: 18px;
+  color: black
+}
+
+.carousel-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  z-index: 1;
+  background-color: grey;
+  border-radius: 10px;
+  height: fit-content;
+}
+
+.carousel-button.prev {
+  left: 20px;
+}
+
+.carousel-button.next {
+  right: 20px;
+}
+
+/*Mio*/
+.carouselContainer {
+  display: flex;
+  width: 60vw;
+  height: 60px;
+  background-color: #ddd;
+  border-radius: 15px;
+  align-items: center;
+}
+.carrouselButton {
+  transform: translateY(-50%);
+  color: white;
+  cursor: pointer;
+  z-index: 1;
+  background-color: grey;
+  border-radius: 10px;
+  width: 50px;
+  height: 50px;
+  align-content: center;
+  margin-top: 48px;
+}
+
+.carouselCard {
+  width: inherit;
+  height: inherit;
+  background-color: red;
+}
+
+/*Bootstrap*/
+.carousel-item {
+  background-color: white;
+  height: 60px; /* Set the height to 60px */
+  width: 60px;  /* Set the width to 60px */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.carousel-content {
+  text-align: center; /* Center the text within the content */
+}
+
+.carousel-caption {
+  color: black; /* Ensure text is visible on a white background */
+  position: static; /* Override default positioning */
+  margin: 0; /* Remove default margins */
+  padding: 0; /* Remove default padding */
+}
+

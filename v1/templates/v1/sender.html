@@ -1,96 +1,77 @@
-{% load static %}
+{% extends "v1/layout.html" %} {% load static %} {% block title %} Room | {{ sender }}
+{% endblock %} {% block body %}
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400&family=Lustria&display=swap"
-      rel="stylesheet"
-    />
-    <title>Mistery Exchange | Room {{ room_id }} - {{ sender }}</title>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="{% static 'v1/css/styles.css' %}"
-    />
-  </head>
-  <body style="align-items: center;">
-    <div>
-      <div style="display: flex; align-items: center; justify-content: center;">
-        <img
-        src="{% static 'v1/room.png' %}"
-        style="width: 150px; height: fit-content; margin-right: 10px"
-      />
-        <h1>created!</h1>
-      </div>
-      <p>Room ID: {{ room_id }}</p>
-    </div>
-    <div>
-      <h2>{{ sender }}, please make sure to share the below link with {{ receiver }}</h2>
-      <input type="text" value="{{ request.scheme }}://{{ request.get_host }}/s/{{ short_url }}" readonly style="width: 240px; text-align: center;"/>
-    </div>
-    <div class="senderAnswers">
-      <div class="senderAnswers_answer">
-        <h2>Reply about yourself</h2>
-        <form method="post" action="{% url 'sender' room_id sender %}" id="responseForm">
-          {% csrf_token %}
-          <ul>
-            {% for question in questions %}
-            <li>
-              <label>{{ question.question }}</label>
-              <input
-                type="text"
-                name="self_a_{{ question.question_id }}"
-                required
-                style="height: 40px; border-radius: 10px; margin-top: 5px; text-align: center;"
-                class="answerInput"
-              />
-            </li>
-            {% endfor %}
-          </ul>
-      </div>  
-      <div class="senderAnswers_answer">
-        <h2>Reply about {{ receiver }}</h2>
+<body>
+  <div class="header_title">
+    <img
+    src="{% static 'v1/room.png' %}"
+    class="header_logo_right"
+  />
+    <h1>created!</h1>
+  </div>
+  <div>
+    <h2>{{ sender }}, please make sure to share the below link with {{ receiver }}</h2>
+    <input type="text" value="{{ request.scheme }}://{{ request.get_host }}/s/{{ short_url }}" readonly class="urlShare"/>
+  </div>
+  <div class="senderAnswers">
+    <div class="senderAnswers_answer">
+      <h2>Reply about yourself</h2>
+      <form method="post" action="{% url 'sender' room_id sender %}" id="responseForm">
+        {% csrf_token %}
         <ul>
           {% for question in questions %}
           <li>
             <label>{{ question.question }}</label>
             <input
               type="text"
-              name="other_a_{{ question.question_id }}"
+              name="self_a_{{ question.question_id }}"
               required
-              style="height: 40px; border-radius: 10px; margin-top: 5px; text-align: center;"
               class="answerInput"
             />
           </li>
           {% endfor %}
         </ul>
-      </div>
+    </div>  
+    <div class="senderAnswers_answer">
+      <h2>Reply about {{ receiver }}</h2>
+      <ul>
+        {% for question in questions %}
+        <li>
+          <label>{{ question.question }}</label>
+          <input
+            type="text"
+            name="other_a_{{ question.question_id }}"
+            required
+            class="answerInput"
+          />
+        </li>
+        {% endfor %}
+      </ul>
     </div>
-        <button type="submit" style="width: 100px; align-self: center;" class="CreateButton">Submit</button>
-      </form>
-      <script>
-        // Function to check if all inputs are filled
-        function checkInputs() {
-          const inputs = document.querySelectorAll('.answerInput');
-          const button = document.querySelector('.CreateButton');
-          const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-          if (allFilled) {
-            button.classList.add('red');
-          } else {
-            button.classList.remove('red');
-          }
+  </div>
+      <button type="submit" class="submitButton">Submit</button>
+    </form>
+    <script>
+      // Function to check if all inputs are filled
+      function checkInputs() {
+        const inputs = document.querySelectorAll('.answerInput');
+        const button = document.querySelector('.submitButton');
+        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+        if (allFilled) {
+          button.classList.add('done');
+        } else {
+          button.classList.remove('done');
         }
-  
-        // Add event listeners to all input fields
-        document.querySelectorAll('.answerInput').forEach(input => {
-          input.addEventListener('input', checkInputs);
-        });
-  
-        // Initial check in case the inputs are pre-filled
-        checkInputs();
-      </script>
-  </body>
-</html>
+      }
+
+      // Add event listeners to all input fields
+      document.querySelectorAll('.answerInput').forEach(input => {
+        input.addEventListener('input', checkInputs);
+      });
+
+      // Initial check in case the inputs are pre-filled
+      checkInputs();
+    </script>
+</body>
+
+{% endblock %}
