@@ -366,6 +366,14 @@ form .question-input {
 }
 
 /*Room*/
+.waitingContainer {
+  height: 65vh; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+}
+
 .roomLogo {
   height: 200px;
   animation: rotate 4s linear infinite;
@@ -393,55 +401,6 @@ form .question-input {
   margin: 20px;
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 20px 0;
-}
-
-th,
-td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: center;
-}
-
-th {
-  background-color: #f2f2f2;
-  color: black;
-}
-
-.results {
-  width: 90dvw;
-  align-self: center;
-}
-
-.createNew {
-  text-decoration: none;
-  color: white;
-  width: 150px;
-  height: 40px;
-  align-self: center;
-  align-content: center;
-  border-radius: 10px;
-  background: linear-gradient(
-    to right,
-    #15bc78,
-    #a310a3,
-    #c68825,
-    #5c50de,
-    #ca4d4d,
-    #7d7dc5
-  );
-  background-size: 600% 600%;
-  animation: gradientMove 10s linear infinite;
-}
-
-.createNew:hover {
-  opacity: 0.75;
-}
-
-/*ChatGPT*/
 .carousel {
   position: relative;
   width: 100%;
@@ -496,3 +455,29 @@ th {
 .next {
   right: 10px;
 }
+
+.createNew {
+  text-decoration: none;
+  color: white;
+  width: 150px;
+  height: 40px;
+  align-self: center;
+  align-content: center;
+  border-radius: 10px;
+  background: linear-gradient(
+    to right,
+    #15bc78,
+    #a310a3,
+    #c68825,
+    #5c50de,
+    #ca4d4d,
+    #7d7dc5
+  );
+  background-size: 600% 600%;
+  animation: gradientMove 10s linear infinite;
+}
+
+.createNew:hover {
+  opacity: 0.75;
+}
+

@@ -75,12 +75,12 @@ def room2(request, room_id, name):
 
     room = get_object_or_404(Room, id=room_id) #GET ROOM OBJECTS
 
-    today = date.today()
-    last_modified = room.last_modification
-    limit_date = last_modified + timedelta(days=10)
-    if today >= limit_date:
-        room.delete()
-        return redirect('error.html')
+    #today = date.today()
+    #last_modified = room.last_modification
+    #limit_date = last_modified + timedelta(days=10)
+    #if today >= limit_date:
+     #   room.delete()
+      #  return redirect('error.html')
     
     #BOOLEAN CHECKING IF SENDER OR RECEIVER
     user_sender = False    
@@ -123,7 +123,8 @@ def room2(request, room_id, name):
                 # SENDER replies about RECEIVER (other_a)
                 question.other_a = request.POST.get(f'other_a_{question.question_id}')
                 question.save()
-            room.save()
+            room.save() #UPDATE LAST_MODIFICATION DATE
+            completeness=check_completeness(room.id) #UPDATE COPLETENESS VAUE BEFORE REDIRECT
             #Notification when sender replies
             subject= f'{name} has already answered about you.'
             message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
@@ -159,6 +160,7 @@ def room2(request, room_id, name):
                 question.save()
 
             room.save()
+            completeness=check_completeness(room.id)
             subject= f'{name} has already answered about you.'
             message=f'Hi {room.user_name}, {name} has already answered about you. Take a look'
             SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
