@@ -1,3 +1,5 @@
+import datetime
+from datetime import datetime, timedelta, date
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Room, Question, TemporaryQuestion, shortURL
 from .forms import NewQuestionForm, NewRoomForm
@@ -6,7 +8,7 @@ from .utils import shorten_url, SendEmail, check_completeness
 def index(request):
     return render(request, 'v1/index.html')
 
-def create(request): #blablabla
+def create(request):
 
     if 'room_data' not in request.session:
         request.session['room_data'] = {}
@@ -72,6 +74,13 @@ def create(request): #blablabla
 def room2(request, room_id, name):
 
     room = get_object_or_404(Room, id=room_id) #GET ROOM OBJECTS
+
+    today = date.today()
+    last_modified = room.last_modification
+    limit_date = last_modified + timedelta(days=10)
+    if today >= limit_date:
+        room.delete()
+        return redirect('error.html')
     
     #BOOLEAN CHECKING IF SENDER OR RECEIVER
     user_sender = False    
@@ -104,6 +113,7 @@ def room2(request, room_id, name):
             'name':name
         })
     
+    #SENDER HASN'T REPLIED AND REDIRECT TO ANSWER.
     if user_sender and not completeness['sender_completed']:
         if request.method == 'POST':   
         # For each question
@@ -113,7 +123,7 @@ def room2(request, room_id, name):
                 # SENDER replies about RECEIVER (other_a)
                 question.other_a = request.POST.get(f'other_a_{question.question_id}')
                 question.save()
-
+            room.save()
             #Notification when sender replies
             subject= f'{name} has already answered about you.'
             message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
@@ -137,7 +147,8 @@ def room2(request, room_id, name):
         'name':name
         })      
         
-        
+    
+    #IF RECEIVER STILL HASN'T REPLIED, REDIRECT TO ANSWER.    
     if user_receiver and not completeness['receiver_completed']:
         if request.method == 'POST':
             for question in questions:
@@ -147,6 +158,7 @@ def room2(request, room_id, name):
                 question.other_b = request.POST.get(f'other_b_{question.question_id}')
                 question.save()
 
+            room.save()
             subject= f'{name} has already answered about you.'
             message=f'Hi {room.user_name}, {name} has already answered about you. Take a look'
             SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
@@ -179,6 +191,9 @@ def room2(request, room_id, name):
     'name':name
     })
     
+
+def error(request):
+    return render(request, 'v1/error.html')
 
 def answers(request):
     return render(request, 'v1/answers.html')

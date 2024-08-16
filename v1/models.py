@@ -8,6 +8,7 @@ class Room(models.Model):
     other_person_name = models.CharField(max_length=100) #RECEIVER of form
     sender_email = models.EmailField(default='1234@gmail.com')
     receiver_email = models.EmailField(default='1234@gmail.com')
+    last_modification = models.DateField(auto_now=True)
 
 
 class TemporaryQuestion(models.Model):
