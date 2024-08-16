@@ -142,8 +142,15 @@
 
       // Handle form submission
       const form = document.querySelector("form");
+      const userName = document.getElementById("id_user_name").value.trim().toLowerCase();
+      const otherPersonName = document.getElementById("id_other_person_name").value.trim().toLowerCase();
+
       form.addEventListener("submit", function (event) {
         const hasQuestions = parseInt(hasQuestionsElement.value, 10);
+        if (userName === otherPersonName) {
+          alert("Your name and the receiver's name can't be the same, sorry for the inconvenience!");
+          event.preventDefault(); // Prevent form submission
+        }
         if (hasQuestions < 1) {
           alert("You must at least add one question to create a room");
           event.preventDefault(); // Prevent form submission
