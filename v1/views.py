@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Room, Question, TemporaryQuestion, shortURL
 from .forms import NewQuestionForm, NewRoomForm
-import random
 from .utils import shorten_url, SendEmail, check_completeness
 
 def index(request):
@@ -172,17 +171,16 @@ def room2(request, room_id, name):
         
         
     return render(request, 'v1/room.html', {
-            'user_sender': user_sender,
-            'user_receiver': user_receiver,
-            'completeness': completeness,
-            'room': room,
-            'questions': questions,
-            'name':name
-            })
+    'user_sender': user_sender,
+    'user_receiver': user_receiver,
+    'completeness': completeness,
+    'room': room,
+    'questions': questions,
+    'name':name
+    })
     
 
 def answers(request):
-
     return render(request, 'v1/answers.html')
 
 
