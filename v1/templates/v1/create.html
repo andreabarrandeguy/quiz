@@ -142,11 +142,11 @@
 
       // Handle form submission
       const form = document.querySelector("form");
-      const userName = document.getElementById("id_user_name").value.trim().toLowerCase();
-      const otherPersonName = document.getElementById("id_other_person_name").value.trim().toLowerCase();
 
       form.addEventListener("submit", function (event) {
         const hasQuestions = parseInt(hasQuestionsElement.value, 10);
+        const userName = document.getElementById("id_user_name").value.trim().toLowerCase();
+        const otherPersonName = document.getElementById("id_other_person_name").value.trim().toLowerCase();
         if (userName === otherPersonName) {
           alert("Your name and the receiver's name can't be the same, sorry for the inconvenience!");
           event.preventDefault(); // Prevent form submission

@@ -1,85 +1,179 @@
-{% extends "v1/layout.html" %} 
-{% load static %} 
-{% block title %} Room | {{ receiver }} {% endblock %} 
-{% block body %}
+{% extends "v1/layout.html" %} {% load static %} {% block title %} 
+Room | {{ receiver }} {% endblock %} {% block body %}
 
-<body class="bodyCreate" style="overflow: auto;">
-    {{user_sender}}/{{user_receiver}}{{completeness}}
-    <p>
-        {% for question in questions %}
-            {{question.question}}
-        {% endfor %}
-    </p> 
-    <div class="bodyCreate_container">
-      <div class="header_title">
+<body class="bodyCreate" style="overflow: auto">
+  {{user_sender}}/{{user_receiver}}{{completeness}}
+  <p>{% for question in questions %} {{question.question}} {% endfor %}</p>
+  <input type="hidden" id="name" value="{{ name }}" />
+
+  <div class="bodyCreate_container" id="answersSender">
+    <div class="header_title">
         <h1>Welcome to</h1>
-        <img
-          src="{% static 'v1/room.png' %}"
-          class="header_logo_left"
-        />
-        <h1>, {{ room.other_person_name }}!</h1>
-        <input type="hidden" id="name" value="{{ name }}">
+        <img src="{% static 'v1/room.png' %}" class="header_logo_left" />
+        <h1>, {{ room.user_name }}!</h1>
       </div>
       <ol class="bodyCreate_header_text">
         <li>1. Reply to the questions below, and submit.</li>
-        <li>
-          2. Check {{ sender }}'s answers for matches!
-        </li>
+        <li>2. Check {{ room.other_person_name }}'s answers for matches!</li>
       </ol>
-    </div>
+    
     <div>
-      <form method="post" action="{% url 'room2' room.id name %}" id="responseForm">
+      <form
+        method="post"
+        action="{% url 'room2' room.id name %}"
+        id="responseForm"
+      >
         {% csrf_token %}
-        <div style="width: 45vw;">
+        <div style="width: 45vw">
           {% for question in questions %}
-          <div style="border: grey solid 2px; border-radius: 10px; margin: 20px; padding: 15px; background-color: rgba(0, 0, 0, 0.5);">
-            <h3 style="margin-bottom: 10px;">{{ question.question }}</h3>
-            <div style="display: flex; justify-content: space-around; flex-direction: column; align-items: center;">
-                <input
-                  type="text"
-                  name="self_b_{{ question.question_id }}"
-                  required
-                  autofocus
-                  class="answerInput"
-                  style="width: 90%; font-style: italic;"
-                  placeholder="Reply about yourself"
-                />
-                <input
+          <div
+            style="
+              border: grey solid 2px;
+              border-radius: 10px;
+              margin: 20px;
+              padding: 15px;
+              background-color: rgba(0, 0, 0, 0.5);
+            "
+          >
+            <h3 style="margin-bottom: 10px">{{ question.question }}</h3>
+            <div
+              style="
+                display: flex;
+                justify-content: space-around;
+                flex-direction: column;
+                align-items: center;
+              "
+            >
+              <input
                 type="text"
-                name="other_b_{{ question.question_id }}"
+                name="self_a_{{ question.question_id }}"
+                required
+                autofocus
+                class="answerInput"
+                style="width: 90%; font-style: italic"
+                placeholder="Reply about yourself"
+              />
+              <input
+                type="text"
+                name="other_a_{{ question.question_id }}"
                 required
                 class="answerInput"
-                style="width: 90%; font-style: italic;"
-                placeholder="Reply about {{ room.user_name }}"
-                />
+                style="width: 90%; font-style: italic"
+                placeholder="Reply about {{ room.other_person_name }}"
+              />
             </div>
           </div>
           {% endfor %}
         </div>
         <button type="submit" class="submitButton">Submit</button>
       </form>
-      <script>
-        // Function to check if all inputs are filled
-        function checkInputs() {
-          const inputs = document.querySelectorAll('.answerInput');
-          const button = document.querySelector('.submitButton');
-          const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
-          if (allFilled) {
-            button.classList.add('done');
-          } else {
-            button.classList.remove('done');
-          }
-        }
-
-        // Add event listeners to all input fields
-        document.querySelectorAll('.answerInput').forEach(input => {
-          input.addEventListener('input', checkInputs);
-        });
-
-        // Initial check in case the inputs are pre-filled
-        checkInputs();
-      </script>
     </div>
+  </div>
+
+  
+  <div class="bodyCreate_container" id="answersReceiver">
+    <div class="header_title">
+      <h1>Welcome to</h1>
+      <img src="{% static 'v1/room.png' %}" class="header_logo_left" />
+      <h1>, {{ room.other_person_name }}!</h1>
+    </div>
+    <ol class="bodyCreate_header_text">
+      <li>1. Reply to the questions below, and submit.</li>
+      <li>2. Check {{ room.user_name }}'s answers for matches!</li>
+    </ol>
+  
+  <div>
+    <form
+      method="post"
+      action="{% url 'room2' room.id name %}"
+      id="responseForm"
+    >
+      {% csrf_token %}
+      <div style="width: 45vw">
+        {% for question in questions %}
+        <div
+          style="
+            border: grey solid 2px;
+            border-radius: 10px;
+            margin: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+          "
+        >
+          <h3 style="margin-bottom: 10px">{{ question.question }}</h3>
+          <div
+            style="
+              display: flex;
+              justify-content: space-around;
+              flex-direction: column;
+              align-items: center;
+            "
+          >
+            <input
+              type="text"
+              name="self_b_{{ question.question_id }}"
+              required
+              autofocus
+              class="answerInput"
+              style="width: 90%; font-style: italic"
+              placeholder="Reply about yourself"
+            />
+            <input
+              type="text"
+              name="other_b_{{ question.question_id }}"
+              required
+              class="answerInput"
+              style="width: 90%; font-style: italic"
+              placeholder="Reply about {{ room.user_name }}"
+            />
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="submitButton">Submit</button>
+    </form>
+  </div>
+</div>
+  <script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+      // Get name of who is entering, and the name's of sender and receiver for the room
+      const name = document.getElementById("name").value;
+      const sender = "{{ room.user_name }}";
+      const receiver = "{{ room.other_person_name }}";
+
+      // Show personalized form for sender
+      if (name === sender) {
+        document.getElementById("answersSender").classList.remove("hidden");
+        document.getElementById("answersReceiver").classList.add("hidden");
+        // Show personalized form for receiver
+      } else if (name === receiver) {
+        document.getElementById("answersSender").classList.add("hidden");
+        document.getElementById("answersReceiver").classList.remove("hidden");
+      }
+    });
+
+    // Function to check if all inputs are filled
+    function checkInputs() {
+      const inputs = document.querySelectorAll(".answerInput");
+      const button = document.querySelector(".submitButton");
+      const allFilled = Array.from(inputs).every(
+        (input) => input.value.trim() !== ""
+      );
+      if (allFilled) {
+        button.classList.add("done");
+      } else {
+        button.classList.remove("done");
+      }
+    }
+
+    // Add event listeners to all input fields
+    document.querySelectorAll(".answerInput").forEach((input) => {
+      input.addEventListener("input", checkInputs);
+    });
+
+    // Initial check in case the inputs are pre-filled
+    checkInputs();
+  </script>
 </body>
 
 {% endblock %}
