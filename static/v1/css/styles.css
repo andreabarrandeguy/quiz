@@ -366,6 +366,14 @@ form .question-input {
 }
 
 /*Room*/
+.waitingContainer {
+  height: 65vh; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+}
+
 .roomLogo {
   height: 200px;
   animation: rotate 4s linear infinite;
