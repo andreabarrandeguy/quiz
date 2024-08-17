@@ -25,7 +25,7 @@ def shorten_url(request, long_url):
     return short_url_instance.short_url
 
 
-def SendEmail(request, receiver_email, room_id, sender, subject=None, message=None):
+def SendEmail(receiver_email, sender, subject=None, message=None):
 
     email_from = f'Room <no-reply@quiz.com>'
     recipient_list = [receiver_email]

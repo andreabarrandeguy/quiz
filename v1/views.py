@@ -1,5 +1,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
+
+from quiz2.settings import EMAIL_HOST_USER
 from .models import Room, Question, shortURL
 from .forms import NewQuestionForm, NewRoomForm
 from .utils import shorten_url, SendEmail, check_completeness
@@ -66,11 +68,11 @@ def create(request):
         link = request.get_host()
         subject_receiver= f'{room.user_name} just created a new room.'
         message_receiver=f'Hi {room.other_person_name}, {room.user_name} created a new room. Take a look and answer the questions. Visit: {scheme}://{link}/{room.id}/{room.other_person_name}'
-        SendEmail(request, room.receiver_email, room.id, room.user_name, subject_receiver, message_receiver)
+        SendEmail(room.receiver_email, EMAIL_HOST_USER, subject_receiver, message_receiver)
         #SEND MAIL TO SENDER
         subject_sender=f'Room Created'
         message_sender=f'Hi {room.user_name}, you have succesfully created a new room. This is your link to answer: {scheme}://{link}/{room.id}/{room.user_name}'
-        SendEmail(request, room.sender_email, room.id, room.user_name, subject_sender, message_sender)
+        SendEmail(room.sender_email, EMAIL_HOST_USER, subject_sender, message_sender)
          
         return redirect(f'/{room.id}/{room_form.cleaned_data["user_name"]}/')
 
@@ -141,12 +143,12 @@ def room2(request, room_id, name):
             if not completeness['receiver_completed']:
                 subject= f'{name} has just replied about you.'
                 message = f'Hi, {room.other_person_name}. {name} has replied about both of you. Please visit {scheme}://{link}/{room.id}/{room.other_person_name} and do your part.'
-                SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+                SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
                 #IF RECEIVER REPLIED FIRST
             elif completeness['receiver_completed']:
                 subject=f'{name} has just replied about you.'
                 message=f'Hi, {room.other_person_name}. {name} has completed it part of the quiz. Visit this link and take a look how well you know each other: {scheme}://{link}/{room.id}/{room.other_person_name}'
-                SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+                SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
 
             return render(request, 'v1/room.html', {
                 'user_sender': user_sender,
@@ -186,12 +188,12 @@ def room2(request, room_id, name):
             if not completeness['sender_completed']:
                 subject= f'{name} has just replied about you.'
                 message = f'Hi, {room.user_name}. {name} has already replied about both of you. Hurry up and visit {scheme}://{link}/{room.id}/{room.user_name}. {name} is still waiting.'
-                SendEmail(request, sender_email, room.id, room.user_name, subject, message)
+                SendEmail(sender_email, EMAIL_HOST_USER, subject, message)
                 #IF SENDER REPLIED FIRST
             elif completeness['sender_completed']:
                 subject=f'{name} has just replied about you.'
                 message=f'Hi, {room.user_name}. {name} has completed it part of the quiz. Visit this link and take a look how well you know each other: {scheme}://{link}/{room.id}/{room.user_name}'
-                SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
+                SendEmail(sender_email, EMAIL_HOST_USER, subject, message)    
         
             return render(request, 'v1/room.html', {
             'user_sender': user_sender,
