@@ -2,18 +2,20 @@
 {% endblock %} {% block body %}
 
 <body>
-  <div>
-    <img src="{% static 'v1/room.png' %}" class="indexLogo"/>
-    <h2>Discover How Well You Know Each Other</h2>
+  <div style="display: flex; flex-direction: column; height: 40vh; justify-content: space-between; position: absolute; top: 25%;">
+    <div>
+      <img src="{% static 'v1/room.png' %}" class="indexLogo"/>
+      <h2>Discover How Well You Know Each Other</h2>
+    </div>
+    <div>
+      <button class="indexCreateButton" id="indexCreateButton">
+        Start
+      </button>
+      <div id="circleAnimation" class="circleAnimation"></div>
+    </div>
   </div>
-  <div>
-    <button class="indexCreateButton" id="indexCreateButton">
-      Start
-    </button>
-    <div id="circleAnimation" class="circleAnimation"></div>
-  </div>
-  <div style="width: 30vw; height: 70px; display: flex; flex-direction: column; justify-content: space-between; position: absolute; bottom: 10px;">
-    <p class="githubText">Developed by</p>
+  <div style="width: 455px; height: 60px; display: flex; flex-direction: column; justify-content: space-between; position: absolute; bottom: 10px;">
+    <p class="githubHeader">Developed by</p>
     <div style="display: flex; justify-content: space-around;">
       <div style="display: flex; flex-direction: column; align-items: center;">
         <a
