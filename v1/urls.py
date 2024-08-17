@@ -8,5 +8,5 @@ urlpatterns = [
     path('answers/<str:name>/', views.answers, name='answers'),
     path('error/', views.error, name = 'error'),
     
-    path('s/<str:short_url>/', views.redirect_short_url, name='redirect_short_url'),
+    path('<str:short_url>/', views.redirect_short_url, name='redirect_short_url'),
 ]

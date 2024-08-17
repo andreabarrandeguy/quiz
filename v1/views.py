@@ -61,6 +61,16 @@ def create(request):
                 Question.objects.create(room=room, question=temp_question)
             request.session.pop('temp_questions', None)
             request.session.pop('room_data', None)
+
+        #SEND MAIL TO RECEIVER
+        subject_receiver= f'{room.user_name} just created a new room.'
+        message_receiver=f'Hi {room.other_person_name}, {room.user_name} created a new room. Take a look and answer the questions. Visit: _____________ '
+        SendEmail(request, room.receiver_email, room.id, room.user_name, subject_receiver, message_receiver)
+        #SEND MAIL TO SENDER
+        subject_sender=f'Room Created'
+        message_sender=f'Hi {room.user_name}, you have succesfully created a new room. Share this link with your partner:____________'
+        SendEmail(request, room.sender_email, room.id, room.user_name, subject_sender, message_sender)
+         
         return redirect(f'/{room.id}/{room_form.cleaned_data["user_name"]}/')
 
     temp_questions = request.session.get('temp_questions', [])
@@ -74,13 +84,6 @@ def create(request):
 def room2(request, room_id, name):
 
     room = get_object_or_404(Room, id=room_id) #GET ROOM OBJECTS
-
-    #today = date.today()
-    #last_modified = room.last_modification
-    #limit_date = last_modified + timedelta(days=10)
-    #if today >= limit_date:
-     #   room.delete()
-      #  return redirect('error.html')
     
     #BOOLEAN CHECKING IF SENDER OR RECEIVER
     user_sender = False    
@@ -126,8 +129,8 @@ def room2(request, room_id, name):
             room.save() #UPDATE LAST_MODIFICATION DATE
             completeness=check_completeness(room.id) #UPDATE COPLETENESS VAUE BEFORE REDIRECT
             #Notification when sender replies
-            subject= f'{name} has already answered about you.'
-            message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
+            subject= f'Notificacion de extrañitis'
+            message=f'Este es un mensaje generado automaticamente para recordarle que su novio la ama y la extraña.' #Receiver gets link to answer
             SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
 
             return render(request, 'v1/room.html', {
