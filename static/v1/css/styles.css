@@ -98,6 +98,21 @@ button {
   }
 }
 
+.github {
+  display: flex;
+  text-decoration: none;
+  color: grey;
+  align-items: center;
+}
+
+.githubText {
+  color: grey;
+}
+
+.githubIcon {
+  margin-right: 5px;
+}
+
 /*Create*/
 .bodyCreate {
   justify-content: space-between;
