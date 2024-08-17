@@ -100,7 +100,10 @@ Room | Results
   <a href="{% url 'create' %}" class="createNew" id="createNewButton">
     Create a new one!
   </a>
-  <a href="" class="createNew" id="reminderButton">Send reminder</a>
+  <div style="display: flex; flex-direction: column; position: absolute; bottom: 5%;">
+    <p id="reminderWait" class="reminderWait"></p>
+    <a href="" class="createNew" id="reminderButton">Send reminder</a>
+  </div>
 
   <script>
     document.addEventListener('DOMContentLoaded', (event) => {
@@ -112,6 +115,10 @@ Room | Results
         // Get completeness status for sender and receiver
         const completenessSender = "{{ completeness.sender_completed }}";
         const completenessReceiver = "{{ completeness.receiver_completed }}";
+
+        const lastUpdateRaw = "{{ room.last_modification }}";
+        const lastUpdate = new Date(lastUpdateRaw).toISOString().split('T')[0];
+        const today = new Date().toISOString().split('T')[0];
 
         // If both have already replied
         if (completenessSender === "True" && completenessReceiver === "True") {
@@ -132,7 +139,7 @@ Room | Results
             document.getElementById("carouselReceiver").classList.remove("hidden");
             }
         // If one of them hasn't already replied
-        // We can safely assume the one accesing this page is the one how HAS replied
+        // We can safely assume the one accesing this page is the one who HAS replied
         } else if (completenessSender === "False" || completenessReceiver === "False") {
             // Hide all carousel related content
             document.getElementById("roomLogo").classList.remove("hidden");
@@ -141,14 +148,25 @@ Room | Results
             document.getElementById("createNewButton").classList.add("hidden");
             document.getElementById("carouselSender").classList.add("hidden");
             document.getElementById("carouselReceiver").classList.add("hidden");
-            // Show personalized waiting message for sender
+            
+            // Check if the last update was today
+            if (lastUpdate === today) {
+                document.getElementById("reminderButton").classList.add("disable");
+                const reminderWait = document.getElementById("reminderWait");
+                if (name === sender) {
+                  reminderWait.innerHTML = "{{ room.other_person_name}} has already been notified today. Come back tomorrow!";
+                } else if (name === receiver) {
+                  reminderWait.innerHTML = "{{ room.user_name}} has already been notified today. Come back tomorrow!";
+                }             
+            }
+
+            // Show personalized waiting message based on the user
             if (name === sender) {
-            document.getElementById("messageSender").classList.add("hidden");
-            document.getElementById("messageReceiver").classList.remove("hidden");
-            // Show personalized waiting message for receiver
+                document.getElementById("messageSender").classList.add("hidden");
+                document.getElementById("messageReceiver").classList.remove("hidden");
             } else if (name === receiver) {
-            document.getElementById("messageSender").classList.remove("hidden");
-            document.getElementById("messageReceiver").classList.add("hidden");
+                document.getElementById("messageSender").classList.remove("hidden");
+                document.getElementById("messageReceiver").classList.add("hidden");
             }
         }
     });

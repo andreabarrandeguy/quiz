@@ -37,7 +37,17 @@ button {
   cursor: pointer;
 }
 
-/*Index*/
+/* Index */
+.indexContainer {
+  display: flex; 
+  flex-direction: column; 
+  height: 40vh; 
+  justify-content: space-between; 
+  position: absolute; 
+  top: 25%;
+  text-align: -webkit-center;
+}
+
 .indexLogo {
   width: 500px;
 }
@@ -46,12 +56,9 @@ button {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   font-size: 1.25rem;
-  position: relative;
-  z-index: 1;
   border: none;
   border-radius: 10px;
   color: white;
-  height: fit-content;
   background: linear-gradient(
     to right,
     #15bc78,
@@ -98,12 +105,14 @@ button {
   }
 }
 
-.github {
-  display: flex;
-  text-decoration: none;
-  color: grey;
-  align-items: center;
-  font-size: 0.75rem;
+.githubContainer {
+  width: 455px; 
+  height: 60px;
+  display: flex; 
+  flex-direction: column; 
+  justify-content: space-between; 
+  position: absolute; 
+  bottom: 10px;
 }
 
 .githubHeader {
@@ -113,8 +122,22 @@ button {
   border-bottom: solid 1px grey;
 }
 
-.githubText {
+.githubUsers {
+  display: flex; 
+  justify-content: space-around;
+}
+
+.githubUsers_user {
+  display: flex; 
+  flex-direction: column; 
+  align-items: center;
+}
+
+.github {
+  display: flex;
+  text-decoration: none;
   color: grey;
+  align-items: center;
   font-size: 0.75rem;
 }
 
@@ -122,9 +145,15 @@ button {
   margin-right: 5px;
 }
 
-/*Create*/
+.githubText {
+  color: grey;
+  font-size: 0.75rem;
+}
+
+/* Create */
 .bodyCreate {
   justify-content: space-between;
+  overflow: scroll;
 }
 
 .bodyCreate_container {
@@ -239,6 +268,14 @@ form .question-input {
   }
 }
 
+.addQuestionButton {
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  background-color: white;
+  border: none;
+  border-radius: 15px;
+}
+
 .CreateButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
@@ -321,7 +358,125 @@ form .question-input {
   margin-bottom: 15px;
 }
 
-/*Sender*/
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .bodyCreate_container {
+    align-items: center;
+  }
+
+  .bodyCreate_header {
+    width: 95%;
+    height: auto;
+  }
+
+  .bodyCreate_header_text {
+    font-size: 0.9rem;
+  }
+
+  .inputNames_container {
+    width: 75%;
+  }
+
+  .inputNames {
+    flex-direction: row;
+    height: auto;
+    margin: 5px;
+  }
+
+  .inputNames_field {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .inputQuestions {
+    width: 90%;
+  }
+
+  .inputQuestions_input {
+    width: -webkit-fill-available;
+  }
+
+  form .question-input {
+    width: 100%;
+  }
+
+  .randomButton {
+    margin-left: 10px;
+    margin-right: 5px;
+  }
+
+  .addQuestionButton {
+    width: 165px;
+  }
+
+  .questionList {
+    width: 90%;
+  }
+
+  .questionList_question_text {
+    width: calc(100% - 40px);
+  }
+}
+
+@media (max-width: 480px) {
+  .inputNames_container {
+    flex-direction: column;
+  }
+
+  .questionList {
+    width: 100%;
+  }
+
+  .questionList_question_text {
+    width: calc(100% - 35px);
+  }
+
+  .buttonsContainer {
+    flex-direction: column;
+  }
+
+  .CreateButton {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .header_logo_left {
+    width: 80px;
+  }
+
+  .bodyCreate_header_text {
+    font-size: 0.8rem;
+  }
+
+  .inputNames_field {
+    font-size: 0.9rem;
+  }
+
+  .inputQuestions {
+    font-size: 0.9rem;
+  }
+
+  .randomButton, .CreateButton {
+    font-size: 0.8rem;
+    padding: 8px;
+  }
+
+  .questionList_question_text {
+    font-size: 0.8rem;
+  }
+
+  .note {
+    font-size: 0.6rem;
+  }
+}
+
+
+
+/* Sender */
 .header_logo_right {
   width: 150px; 
   height: fit-content; 
@@ -396,13 +551,14 @@ form .question-input {
   animation: gradientMove 10s linear infinite;
 }
 
-/*Room*/
+/* Room */
 .waitingContainer {
   height: 65vh; 
   display: flex; 
   flex-direction: column; 
   align-items: center; 
   justify-content: center;
+  margin-bottom: 70px;
 }
 
 .roomLogo {
@@ -512,3 +668,57 @@ form .question-input {
   opacity: 0.75;
 }
 
+.reminderWait {
+  font-weight: 100;
+  font-size: 0.9rem;
+  color: grey;
+  font-style: italic;
+}
+
+.disable {
+  background: grey !important;
+  opacity: 0.5;
+  cursor: not-allowed; 
+  pointer-events: none; 
+  margin-top: 10px;
+}
+.disable:hover {
+  opacity: 0.5;
+}
+
+/* Media Queries */
+@media (max-width: 480px) {
+  .indexLogo {
+    width: 90%;
+  }
+
+  .indexContainer h2 {
+    width: 90%;
+  }
+
+  .githubContainer {
+    width: 90%;
+  }
+
+  .githubHeader {
+    font-size: 0.6rem;
+  }
+
+  .github {
+    font-size: 0.6rem;
+  }
+
+  .githubText {
+    font-size: 0.6rem;
+  }
+}
+
+@media (max-width: 300px) {
+  .indexLogo {
+    width: 100%;
+  }
+
+  .indexContainer h2 {
+    font-size: large;
+  }
+}

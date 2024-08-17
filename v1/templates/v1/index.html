@@ -2,22 +2,22 @@
 {% endblock %} {% block body %}
 
 <body>
-  <div style="display: flex; flex-direction: column; height: 40vh; justify-content: space-between; position: absolute; top: 25%;">
+  <div class="indexContainer">
     <div>
       <img src="{% static 'v1/room.png' %}" class="indexLogo"/>
       <h2>Discover How Well You Know Each Other</h2>
     </div>
     <div>
-      <button class="indexCreateButton" id="indexCreateButton">
+      <button class="indexCreateButton" id="indexCreateButton" data-redirect-url="{% url 'create' %}">
         Start
-      </button>
+    </button>
       <div id="circleAnimation" class="circleAnimation"></div>
     </div>
   </div>
-  <div style="width: 455px; height: 60px; display: flex; flex-direction: column; justify-content: space-between; position: absolute; bottom: 10px;">
+  <div class="githubContainer">
     <p class="githubHeader">Developed by</p>
-    <div style="display: flex; justify-content: space-around;">
-      <div style="display: flex; flex-direction: column; align-items: center;">
+    <div class="githubUsers">
+      <div class="githubUsers_user">
         <a
         href="https://github.com/andreabarrandeguy/"
         target="_blank"
@@ -26,7 +26,7 @@
         ><i class="fa-brands fa-github githubIcon"></i><p>Andrea Barrandeguy</p></a>
         <p class="githubText">Front end</p>
       </div>
-      <div style="display: flex; flex-direction: column; align-items: center;">
+      <div class="githubUsers_user">
         <a
         href="https://github.com/pedvel/"
         target="_blank"
@@ -37,20 +37,7 @@
       </div>
     </div>
   </div>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var indexCreateButton = document.getElementById("indexCreateButton");
-      var circleAnimation = document.getElementById("circleAnimation");
-      var redirectUrl = '{% url "create" %}'; 
-
-      indexCreateButton.addEventListener("click", function () {
-        circleAnimation.classList.add("animate");
-        setTimeout(function () {
-          window.location.href = redirectUrl; 
-        }, 300); // Match the duration of the CSS animation
-      });
-    });
-  </script>
+  <script src="{% static 'v1/index.js' %}"></script>
 </body>
 
 {% endblock %}
