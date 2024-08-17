@@ -1,7 +1,5 @@
-from pyexpat import model
-from attr import fields
 from django import forms
-from v1.models import TemporaryQuestion, Room
+from v1.models import Question, Room
 
 class NewRoomForm(forms.ModelForm):
     user_name=forms.CharField(max_length=255, label=False, widget=forms.TextInput(attrs={
@@ -35,5 +33,5 @@ class NewQuestionForm(forms.ModelForm):
     )
 
     class Meta:
-        model=TemporaryQuestion
+        model=Question
         fields=['question']

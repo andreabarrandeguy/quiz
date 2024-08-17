@@ -10,11 +10,6 @@ class Room(models.Model):
     receiver_email = models.EmailField(default='1234@gmail.com')
     last_modification = models.DateField(auto_now=True)
 
-
-class TemporaryQuestion(models.Model):
-    room_id=models.UUIDField(default=uuid.uuid4)
-    question=models.CharField(max_length=255)
-
 class Question(models.Model):
     question_id = models.AutoField(primary_key=True)
     room = models.ForeignKey(Room, on_delete=models.CASCADE) # Links to "id" from Room above

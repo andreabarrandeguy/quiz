@@ -1,7 +1,8 @@
-import datetime
-from datetime import datetime, timedelta, date
+
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Room, Question, TemporaryQuestion, shortURL
+
+from quiz2.settings import EMAIL_HOST_USER
+from .models import Room, Question, shortURL
 from .forms import NewQuestionForm, NewRoomForm
 from .utils import shorten_url, SendEmail, check_completeness
 
@@ -61,6 +62,18 @@ def create(request):
                 Question.objects.create(room=room, question=temp_question)
             request.session.pop('temp_questions', None)
             request.session.pop('room_data', None)
+
+        #SEND MAIL TO RECEIVER
+        scheme = request.scheme
+        link = request.get_host()
+        subject_receiver= f'{room.user_name} just created a new room.'
+        message_receiver=f'Hi {room.other_person_name}, {room.user_name} created a new room. Take a look and answer the questions. Visit: {scheme}://{link}/{room.id}/{room.other_person_name}'
+        SendEmail(room.receiver_email, EMAIL_HOST_USER, subject_receiver, message_receiver)
+        #SEND MAIL TO SENDER
+        subject_sender=f'Room Created'
+        message_sender=f'Hi {room.user_name}, you have succesfully created a new room. This is your link to answer: {scheme}://{link}/{room.id}/{room.user_name}'
+        SendEmail(room.sender_email, EMAIL_HOST_USER, subject_sender, message_sender)
+         
         return redirect(f'/{room.id}/{room_form.cleaned_data["user_name"]}/')
 
     temp_questions = request.session.get('temp_questions', [])
@@ -73,14 +86,8 @@ def create(request):
 
 def room2(request, room_id, name):
 
-    room = get_object_or_404(Room, id=room_id) #GET ROOM OBJECTS
-
-    #today = date.today()
-    #last_modified = room.last_modification
-    #limit_date = last_modified + timedelta(days=10)
-    #if today >= limit_date:
-     #   room.delete()
-      #  return redirect('error.html')
+    #GET ROOM OBJECTS
+    room = get_object_or_404(Room, id=room_id) 
     
     #BOOLEAN CHECKING IF SENDER OR RECEIVER
     user_sender = False    
@@ -100,7 +107,10 @@ def room2(request, room_id, name):
     sender_email=room.sender_email
     receiver_email=room.receiver_email
 
-    #TODO: INSERTAR LINKS EN CORREOS
+    #GETS LINKS FOR MAILS
+    scheme = request.scheme
+    link = request.get_host()
+
 
     #IF BOTH COMPLETED REDIRECT TO ROOM
     if completeness['sender_completed'] and completeness['receiver_completed']:
@@ -123,12 +133,22 @@ def room2(request, room_id, name):
                 # SENDER replies about RECEIVER (other_a)
                 question.other_a = request.POST.get(f'other_a_{question.question_id}')
                 question.save()
-            room.save() #UPDATE LAST_MODIFICATION DATE
-            completeness=check_completeness(room.id) #UPDATE COPLETENESS VAUE BEFORE REDIRECT
-            #Notification when sender replies
-            subject= f'{name} has already answered about you.'
-            message=f'Hi {room.other_person_name}, {name} has already answered about you. Here is the link to your questions:______________' #Receiver gets link to answer
-            SendEmail(request, receiver_email, room.id, room.user_name, subject, message)
+            
+            #UPDATE LAST_MODIFICATION AND COMPLETENESS BEFORE MAIL AND REDIRECT
+            room.save() 
+            completeness=check_completeness(room.id)
+            
+            #NOTIFICATIONS TO RECEIVER
+                #IF RECEIVER HASN'T YET REPLIED
+            if not completeness['receiver_completed']:
+                subject= f'{name} has just replied about you.'
+                message = f'Hi, {room.other_person_name}. {name} has replied about both of you. Please visit {scheme}://{link}/{room.id}/{room.other_person_name} and do your part.'
+                SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
+                #IF RECEIVER REPLIED FIRST
+            elif completeness['receiver_completed']:
+                subject=f'{name} has just replied about you.'
+                message=f'Hi, {room.other_person_name}. {name} has completed it part of the quiz. Visit this link and take a look how well you know each other: {scheme}://{link}/{room.id}/{room.other_person_name}'
+                SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
 
             return render(request, 'v1/room.html', {
                 'user_sender': user_sender,
@@ -158,12 +178,22 @@ def room2(request, room_id, name):
                 # RECEIVER replies about SENDER (other_b)
                 question.other_b = request.POST.get(f'other_b_{question.question_id}')
                 question.save()
-
+            #UPDATE LAST_MODIFICATION
             room.save()
+            #UPDATE COMPLETENESS BEFORE MAILS AND REDIRECT
             completeness=check_completeness(room.id)
-            subject= f'{name} has already answered about you.'
-            message=f'Hi {room.user_name}, {name} has already answered about you. Take a look'
-            SendEmail(request, sender_email, room.id, room.user_name, subject, message)    
+            
+            #NOTIFICATIONS
+                #IF SENDER HASN'T YET REPLIED
+            if not completeness['sender_completed']:
+                subject= f'{name} has just replied about you.'
+                message = f'Hi, {room.user_name}. {name} has already replied about both of you. Hurry up and visit {scheme}://{link}/{room.id}/{room.user_name}. {name} is still waiting.'
+                SendEmail(sender_email, EMAIL_HOST_USER, subject, message)
+                #IF SENDER REPLIED FIRST
+            elif completeness['sender_completed']:
+                subject=f'{name} has just replied about you.'
+                message=f'Hi, {room.user_name}. {name} has completed it part of the quiz. Visit this link and take a look how well you know each other: {scheme}://{link}/{room.id}/{room.user_name}'
+                SendEmail(sender_email, EMAIL_HOST_USER, subject, message)    
         
             return render(request, 'v1/room.html', {
             'user_sender': user_sender,

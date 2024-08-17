@@ -130,8 +130,35 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+EMAIL_HOST_USER = 'room.notifications@gmail.com'
+EMAIL_HOST_PASSWORD = 'uych tubf jria zoai'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 CRON_CLASSES = [
     'v1.cron.DeleteOldRoom',
+    'v1.cron.SendReminderDeletion',
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'django_cron.log',
+        },
+    },
+    'loggers': {
+        'django_cron': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}

@@ -1,7 +1,7 @@
 import hashlib
 import base64
 from .models import shortURL, Room, Question
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 
 def shorten_url(request, long_url):
@@ -25,12 +25,21 @@ def shorten_url(request, long_url):
     return short_url_instance.short_url
 
 
-def SendEmail(request, receiver_email, room_id, sender, subject=None, message=None):
+def SendEmail(receiver_email, sender, subject=None, message=None):
 
-    email_from = settings.DEFAULT_FROM_EMAIL
+    email_from = f'Room <no-reply@quiz.com>'
     recipient_list = [receiver_email]
+
+    email = EmailMessage(
+        subject,
+        message,
+        email_from,
+        recipient_list,
+        headers={'Reply-To': 'no-reply@quiz.com'},  # Cambia a la dirección que desees
+    )
+    email.send()
     
-    send_mail(subject, message, email_from, recipient_list)
+    #send_mail(subject, message, email_from, recipient_list, headers={'Reply-To':'no-reply@quiz.com'})
 
 
 def check_completeness(room_id):
