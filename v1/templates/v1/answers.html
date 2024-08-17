@@ -1,9 +1,7 @@
 {% extends "v1/layout.html" %} {% load static %} {% block title %} 
-Room | {{ receiver }} {% endblock %} {% block body %}
+Room | {{ name }} {% endblock %} {% block body %}
 
 <body class="bodyCreate" style="overflow: auto">
-  {{user_sender}}/{{user_receiver}}{{completeness}}
-  <p>{% for question in questions %} {{question.question}} {% endfor %}</p>
   <input type="hidden" id="name" value="{{ name }}" />
 
   <div class="bodyCreate_container" id="answersSender">
@@ -49,7 +47,7 @@ Room | {{ receiver }} {% endblock %} {% block body %}
                 name="self_a_{{ question.question_id }}"
                 required
                 autofocus
-                class="answerInput"
+                class="answerInputSender"
                 style="width: 90%; font-style: italic"
                 placeholder="Reply about yourself"
               />
@@ -57,7 +55,7 @@ Room | {{ receiver }} {% endblock %} {% block body %}
                 type="text"
                 name="other_a_{{ question.question_id }}"
                 required
-                class="answerInput"
+                class="answerInputSender"
                 style="width: 90%; font-style: italic"
                 placeholder="Reply about {{ room.other_person_name }}"
               />
@@ -65,7 +63,7 @@ Room | {{ receiver }} {% endblock %} {% block body %}
           </div>
           {% endfor %}
         </div>
-        <button type="submit" class="submitButton">Submit</button>
+        <button type="submit" class="submitButton" id="submitButtonSender">Submit</button>
       </form>
     </div>
   </div>
@@ -114,7 +112,7 @@ Room | {{ receiver }} {% endblock %} {% block body %}
               name="self_b_{{ question.question_id }}"
               required
               autofocus
-              class="answerInput"
+              class="answerInputReceiver"
               style="width: 90%; font-style: italic"
               placeholder="Reply about yourself"
             />
@@ -122,7 +120,7 @@ Room | {{ receiver }} {% endblock %} {% block body %}
               type="text"
               name="other_b_{{ question.question_id }}"
               required
-              class="answerInput"
+              class="answerInputReceiver"
               style="width: 90%; font-style: italic"
               placeholder="Reply about {{ room.user_name }}"
             />
@@ -130,49 +128,58 @@ Room | {{ receiver }} {% endblock %} {% block body %}
         </div>
         {% endfor %}
       </div>
-      <button type="submit" class="submitButton">Submit</button>
+      <button type="submit" class="submitButton" id="submitButtonReceiver">Submit</button>
     </form>
   </div>
 </div>
   <script>
-    document.addEventListener("DOMContentLoaded", (event) => {
-      // Get name of who is entering, and the name's of sender and receiver for the room
-      const name = document.getElementById("name").value;
-      const sender = "{{ room.user_name }}";
-      const receiver = "{{ room.other_person_name }}";
+document.addEventListener("DOMContentLoaded", (event) => {
+    const name = document.getElementById("name").value;
+    const sender = "{{ room.user_name }}";
+    const receiver = "{{ room.other_person_name }}";
 
-      // Show personalized form for sender
-      if (name === sender) {
+    // Show personalized form for sender
+    if (name === sender) {
         document.getElementById("answersSender").classList.remove("hidden");
         document.getElementById("answersReceiver").classList.add("hidden");
-        // Show personalized form for receiver
-      } else if (name === receiver) {
+    } else if (name === receiver) {
         document.getElementById("answersSender").classList.add("hidden");
         document.getElementById("answersReceiver").classList.remove("hidden");
-      }
-    });
+    }
 
     // Function to check if all inputs are filled
     function checkInputs() {
-      const inputs = document.querySelectorAll(".answerInput");
-      const button = document.querySelector(".submitButton");
-      const allFilled = Array.from(inputs).every(
-        (input) => input.value.trim() !== ""
-      );
-      if (allFilled) {
-        button.classList.add("done");
-      } else {
-        button.classList.remove("done");
-      }
+        const inputsSender = document.querySelectorAll('.answerInputSender');
+        const inputsReceiver = document.querySelectorAll('.answerInputReceiver');
+        const buttonSender = document.getElementById('submitButtonSender');
+        const buttonReceiver = document.getElementById('submitButtonReceiver');
+
+        if (name === sender) {
+            const allFilledSender = Array.from(inputsSender).every(input => input.value.trim() !== '');
+            if (allFilledSender) {
+                buttonSender.classList.add('done');
+            } else {
+                buttonSender.classList.remove('done');
+            }
+        } else if (name === receiver) {
+            const allFilledReceiver = Array.from(inputsReceiver).every(input => input.value.trim() !== '');
+            if (allFilledReceiver) {
+                buttonReceiver.classList.add('done');
+            } else {
+                buttonReceiver.classList.remove('done');
+            }
+        }
     }
 
-    // Add event listeners to all input fields
-    document.querySelectorAll(".answerInput").forEach((input) => {
-      input.addEventListener("input", checkInputs);
+    // Add event listeners to the correct input fields
+    document.querySelectorAll('.answerInputSender, .answerInputReceiver').forEach(input => {
+        input.addEventListener('input', checkInputs);
     });
 
     // Initial check in case the inputs are pre-filled
     checkInputs();
+});
+
   </script>
 </body>
 

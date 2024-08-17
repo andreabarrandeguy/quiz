@@ -98,6 +98,30 @@ button {
   }
 }
 
+.github {
+  display: flex;
+  text-decoration: none;
+  color: grey;
+  align-items: center;
+  font-size: 0.75rem;
+}
+
+.githubHeader {
+  color: grey;
+  font-size: 0.75rem;
+  padding-bottom: 5px; 
+  border-bottom: solid 1px grey;
+}
+
+.githubText {
+  color: grey;
+  font-size: 0.75rem;
+}
+
+.githubIcon {
+  margin-right: 5px;
+}
+
 /*Create*/
 .bodyCreate {
   justify-content: space-between;
@@ -273,7 +297,7 @@ form .question-input {
   color: white;
 }
 
-.CreateButton.done {
+.done {
   background: linear-gradient(
     to right,
     #15bc78,
@@ -315,7 +339,14 @@ form .question-input {
   width: 70vw;
 }
 
-.answerInput {
+.answerInputSender {
+  height: 40px; 
+  border-radius: 10px; 
+  margin-top: 5px; 
+  text-align: center;
+}
+
+.answerInputReceiver {
   height: 40px; 
   border-radius: 10px; 
   margin-top: 5px; 
@@ -351,7 +382,7 @@ form .question-input {
   margin-bottom: 15px;
 }
 
-.submitButton.done {
+.done {
   background: linear-gradient(
     to right,
     #15bc78,

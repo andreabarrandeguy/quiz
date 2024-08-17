@@ -74,9 +74,10 @@
       <input type="hidden" id="has_questions" value="{{ questions|length }}" />
     </form>
   </div>
+  <p ></p>
   <div class="note">
-    <p>Note: Both you and <span style="font-weight: bold;">receiver</span> will get automated emails with your personalized room links to reply or view answers.</p>
-    <p>You will also get a second email when <span style="font-weight: bold;">receiver</span> replies!</p>
+    <p>Note: Both you and <span id="receiverShow" style="font-weight: bold;" >[...]</span> will get automated emails with your personalized room links to reply or view answers.</p>
+    <p>You will also get a second email when <span id="receiverShow2" style="font-weight: bold;">[...]</span> replies!</p>
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -86,6 +87,28 @@
       const inputQuestions = document.getElementById("inputQuestions");
       const createRoomButton = document.getElementById("createRoom");
       const randomButton = document.getElementById("randomButton");
+
+      const receiverInput = document.getElementById("id_other_person_name");
+      const receiverShow = document.getElementById("receiverShow");
+      const receiverShow2 = document.getElementById("receiverShow2");
+
+      // Retrieve the saved value from local storage and set it to receiverShow and receiverShow2
+      const savedReceiverName = localStorage.getItem("receiverName");
+      if (savedReceiverName) {
+        receiverShow.innerHTML = savedReceiverName;
+        receiverShow2.innerHTML = savedReceiverName;
+        receiverInput.value = savedReceiverName;  // If you want the input field to also reflect the saved value
+      }
+
+      // Listen for keyup events on the receiverInput field
+      receiverInput.addEventListener("keyup", function () {
+        const currentReceiverName = receiverInput.value;
+        receiverShow.innerHTML = currentReceiverName;
+        receiverShow2.innerHTML = currentReceiverName;
+
+        // Save the current value to local storage
+        localStorage.setItem("receiverName", currentReceiverName);
+      });
 
       // Define the list of random questions
       const questionsList = [
