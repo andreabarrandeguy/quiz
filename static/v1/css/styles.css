@@ -560,6 +560,26 @@ form .question-input {
   opacity: 0.5;
 }
 
+/*404*/
+.body404 {
+  justify-content: center;
+}
+
+.body404_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.body404 h1 {
+  font-weight: 600;
+}
+
+.body404 h2 {
+  font-size: 2rem;
+}
+
 /* Media Queries */
 @media (max-width: 768px) {
   .bodyCreate_container {
@@ -732,6 +752,10 @@ form .question-input {
 
   .answersContainer_answer {
     margin: 10px 0;
+  }
+
+  .body404_text {
+    flex-wrap: wrap;
   }
 }
 
