@@ -2,20 +2,15 @@ from .models import Room, Question
 from django.core.mail import EmailMessage
 from django.conf import settings
 
-def SendEmail(receiver_email, sender, subject=None, message=None):
-
-    email_from = f'Room <no-reply@quiz.com>'
-    recipient_list = [receiver_email]
-
+def SendEmail(to_email, from_email, subject, html_message):
     email = EmailMessage(
-        subject,
-        message,
-        email_from,
-        recipient_list,
-        headers={'Reply-To': 'no-reply@quiz.com'},  # Cambia a la dirección que desees
+        subject=subject,
+        body=html_message,
+        from_email=from_email,
+        to=[to_email],
     )
-    email.send()
-
+    email.content_subtype = "html"  # Esto asegura que el mensaje sea tratado como HTML
+    email.send(fail_silently=False)
 
 def check_completeness(room_id):
     
