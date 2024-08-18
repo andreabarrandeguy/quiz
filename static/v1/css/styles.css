@@ -343,7 +343,7 @@ form .question-input {
 }
 
 .note {
-  font-style: italic;
+  font-weight: 100;
   font-size: 0.8rem;
   margin-bottom: 15px;
 }

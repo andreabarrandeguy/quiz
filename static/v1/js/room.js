@@ -70,8 +70,8 @@ let currentSlideSender = 0;
 let currentSlideReceiver = 0;
 
 function moveSlide(direction, carouselId) {
-    const carousel = document.querySelector(`#${carouselId} .carousel-slides`);
-    const slides = carousel.querySelectorAll('.carousel-slide');
+    const carousel = document.querySelector(`#${carouselId} .carouselSlides`);
+    const slides = carousel.querySelectorAll('.carouselSlides_slide');
     const totalSlides = slides.length;
 
     let currentSlide = carouselId === 'carouselSender' ? currentSlideSender : currentSlideReceiver;

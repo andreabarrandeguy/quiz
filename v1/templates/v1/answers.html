@@ -6,7 +6,7 @@ Room | {{ name }} {% endblock %} {% block body %}
   <div class="bodyCreate_container" id="answersSender">
     <div class="header_title">
         <h1 class="header_title_text">Welcome to</h1>
-        <img src="{% static 'v1/room.png' %}" class="header_logo_left" />
+        <img src="{% static 'v1/room.png' %}" alt="Room logo" class="header_logo_left"/>
         <h1 class="header_title_text">, {{ room.user_name }}!</h1>
       </div>
       <ol class="bodyCreate_header_text">
@@ -48,7 +48,7 @@ Room | {{ name }} {% endblock %} {% block body %}
   <div class="bodyCreate_container" id="answersReceiver">
     <div class="header_title">
       <h1 class="header_title_text">Welcome to</h1>
-      <img src="{% static 'v1/room.png' %}" class="header_logo_left" />
+      <img src="{% static 'v1/room.png' %}" alt="Room logo" class="header_logo_left" />
       <h1 class="header_title_text">, {{ room.other_person_name }}!</h1>
     </div>
     <ol class="bodyCreate_header_text">
