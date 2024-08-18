@@ -13,7 +13,6 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  margin: 0;
   overflow: hidden;
   position: relative;
   align-items: center;
@@ -216,7 +215,6 @@ form {
   height: 30px;
   text-align: center;
   border-radius: 10px;
-  margin: 0;
 }
 
 .inputNames_field input {
@@ -268,15 +266,7 @@ form .question-input {
   }
 }
 
-.addQuestionButton {
-  font-family: "Lato", sans-serif;
-  font-weight: 400;
-  background-color: white;
-  border: none;
-  border-radius: 15px;
-}
-
-.CreateButton {
+.addQuestionButton, .createButton {
   font-family: "Lato", sans-serif;
   font-weight: 400;
   background-color: white;
@@ -348,7 +338,7 @@ form .question-input {
   animation: gradientMove 10s linear infinite;
 }
 
-.CreateButton:hover {
+.createButton:hover {
   opacity: 0.75;
 }
 
@@ -400,6 +390,12 @@ form .question-input {
 }
 
 /* Room */
+.header_logo_right {
+  width: 150px; 
+  height: fit-content; 
+  margin-right: 10px;
+}
+
 .waitingContainer {
   height: 65vh; 
   display: flex; 
@@ -439,19 +435,19 @@ form .question-input {
 .carousel {
   position: relative;
   width: 100%;
-  height: 65vh; /* Full viewport height */
+  height: 65vh; 
   overflow: hidden;
   background: white;
 }
 
-.carousel-slides {
+.carouselSlides {
   display: flex;
   transition: transform 0.5s ease-in-out;
   height: 100%;
   align-items: center;
 }
 
-.carousel-slide {
+.carouselSlides_slide {
   min-width: 100%;
   text-align: center;
   height: 100%;
@@ -460,14 +456,35 @@ form .question-input {
   justify-content: space-evenly;
 }
 
-.carousel-slide h1 {
+.carouselSlides_slide h1 {
   font-size: 2em;
   color: black;
   margin-top: 30px;
 }
 
-.carousel-slide p {
-  margin: 10px 0;
+.answersContainer {
+  display: flex; 
+  justify-content: space-evenly; 
+  height: 35vh;
+}
+
+.answersContainer_answers {
+  display: flex; 
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.answersContainer_answers h2 {
+  color: black;
+}
+
+.answersContainer_answers h4 {
+  color: black;
+  font-weight: 500;
+}
+
+.carouselSlides_slide p {
+  margin: 10px;
   color: black;
 }
 
@@ -489,6 +506,13 @@ form .question-input {
 
 .next {
   right: 10px;
+}
+
+.roomButtons {
+  display: flex; 
+  flex-direction: column; 
+  position: absolute; 
+  bottom: 5%;
 }
 
 .createNew {
@@ -530,6 +554,7 @@ form .question-input {
   pointer-events: none; 
   margin-top: 10px;
 }
+
 .disable:hover {
   opacity: 0.5;
 }
@@ -604,6 +629,29 @@ form .question-input {
   .answerInputSender, .answerInputReceiver {
     width: 100%;
   }
+
+  .carousel {
+    height: auto;
+    overflow: visible;
+    margin-bottom: 15px;
+  }
+
+  .answersContainer {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .answersContainer_answers {
+    margin: 0 30px;
+  }
+
+  .carouselSlides_slide {
+    align-items: center;
+  }
+
+  .carouselSlides_slide h1 {
+    width: 90%;
+  }
 }
 
 @media (max-width: 480px) {
@@ -629,10 +677,6 @@ form .question-input {
 
   .githubText {
     font-size: 0.6rem;
-  }
-
-  .bodyCreate {
-    overflow: scroll;
   }
 
   .inputNames_container {
@@ -664,8 +708,29 @@ form .question-input {
     width: 90%;
     margin-top: 15px;
   }
+
   .header_logo_left {
     width: 100px;
+  }
+
+  .bodyCreate {
+    overflow: scroll;
+  }
+
+  .bodyRoom {
+    height: auto;
+  }
+
+  .carouselSlides_slide {
+    justify-content: space-around;
+  }
+
+  .answersContainer_answers {
+    margin: 30px;
+  }
+
+  .answersContainer_answer {
+    margin: 10px 0;
   }
 }
 
