@@ -5,7 +5,13 @@ Room | Results
 {% endblock %}
 {% block body %}
 
-<body>
+<body class="bodyRoom"
+      data-name="{{ name }}"
+      data-sender="{{ room.user_name }}"
+      data-receiver="{{ room.other_person_name }}"
+      data-completeness-sender="{{ completeness.sender_completed }}"
+      data-completeness-receiver="{{ completeness.receiver_completed }}"
+      data-last-update="{{ room.last_modification }}">
   <div class="header_title">
     <img
       src="{% static 'v1/room.png' %}"
@@ -30,28 +36,28 @@ Room | Results
   </div>
 
   <div class="carousel" id="carouselSender">
-    <div class="carousel-slides">
+    <div class="carouselSlides">
         {% for question in questions %}
-        <div class="carousel-slide">
+        <div class="carouselSlides_slide">
             <h1>{{ question.question}}</h1>
-            <div style="display: flex; justify-content: space-evenly; height: 35vh;">
-              <div style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <div>
-                  <h2 style="color: black;">{{ room.other_person_name }}'s reply</h2>
+            <div class="answersContainer">
+              <div class="answersContainer_answers">
+                <div class="answersContainer_answer">
+                  <h2>{{ room.other_person_name }}'s reply</h2>
                   <p>{{ question.other_b }}</p>
                 </div>
-                <div>
-                  <h4 style="color: black; font-weight: 500;">Your guess on {{ room.other_person_name }}</h4>
+                <div class="answersContainer_answer">
+                  <h4>Your guess on {{ room.other_person_name }}</h4>
                   <p>{{ question.other_a }}</p>
                 </div>
               </div>
-              <div style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <div>
-                  <h2 style="color: black;">{{ room.other_person_name }}'s guess on you</h2>
+              <div class="answersContainer_answers">
+                <div class="answersContainer_answer">
+                  <h2>{{ room.other_person_name }}'s guess on you</h2>
                   <p>{{ question.other_b }}</p>
                 </div>
-                <div>
-                  <h4 style="color: black; font-weight: 500;">Your reply on yourself</h4>
+                <div class="answersContainer_answer">
+                  <h4>Your reply on yourself</h4>
                   <p>{{ question.self_a }}</p>
                 </div>
               </div>
@@ -64,28 +70,28 @@ Room | Results
   </div>
 
   <div class="carousel" id="carouselReceiver">
-    <div class="carousel-slides">
+    <div class="carouselSlides">
         {% for question in questions %}
-        <div class="carousel-slide">
+        <div class="carouselSlides_slide">
             <h1>{{ question.question}}</h1>
-            <div style="display: flex; justify-content: space-evenly; height: 35vh;">
-              <div style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <div>
-                  <h2 style="color: black;">{{ room.user_name }}'s reply</h2>
+            <div class="answersContainer">
+              <div class="answersContainer_answers">
+                <div class="answersContainer_answer">
+                  <h2>{{ room.user_name }}'s reply</h2>
                   <p>{{ question.other_a }}</p>
                 </div>
-                <div>
-                  <h4 style="color: black; font-weight: 500;">Your guess on {{ room.user_name }}</h4>
+                <div class="answersContainer_answer">
+                  <h4>Your guess on {{ room.user_name }}</h4>
                   <p>{{ question.other_b }}</p>
                 </div>
               </div>
-              <div style="display: flex; flex-direction: column; justify-content: space-evenly;">
-                <div>
-                  <h2 style="color: black;">{{ room.user_name }}'s guess on you</h2>
+              <div class="answersContainer_answers">
+                <div class="answersContainer_answer">
+                  <h2>{{ room.user_name }}'s guess on you</h2>
                   <p>{{ question.other_a }}</p>
                 </div>
-                <div>
-                  <h4 style="color: black; font-weight: 500;">Your reply on yourself</h4>
+                <div class="answersContainer_answer">
+                  <h4>Your reply on yourself</h4>
                   <p>{{ question.self_b }}</p>
                 </div>
               </div>
@@ -100,98 +106,11 @@ Room | Results
   <a href="{% url 'create' %}" class="createNew" id="createNewButton">
     Create a new one!
   </a>
-  <div style="display: flex; flex-direction: column; position: absolute; bottom: 5%;">
+  <div class="roomButtons">
     <p id="reminderWait" class="reminderWait"></p>
     <a href="" class="createNew" id="reminderButton">Send reminder</a>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        // Get name of who is entering, and the name's of sender and receiver for the room
-        const name = document.getElementById('name').value;
-        const sender = "{{ room.user_name }}";
-        const receiver = "{{ room.other_person_name }}";
-
-        // Get completeness status for sender and receiver
-        const completenessSender = "{{ completeness.sender_completed }}";
-        const completenessReceiver = "{{ completeness.receiver_completed }}";
-
-        const lastUpdateRaw = "{{ room.last_modification }}";
-        const lastUpdate = new Date(lastUpdateRaw).toISOString().split('T')[0];
-        const today = new Date().toISOString().split('T')[0];
-
-        // If both have already replied
-        if (completenessSender === "True" && completenessReceiver === "True") {
-            // Hide anything related to the "waiting" animation
-            document.getElementById("waitingContainer").classList.add("hidden");
-            document.getElementById("roomLogo").classList.add("hidden");
-            document.getElementById("reminderButton").classList.add("hidden");
-            document.getElementById("createNewButton").classList.remove("hidden");
-            document.getElementById("messageSender").classList.add("hidden");
-            document.getElementById("messageReceiver").classList.add("hidden");
-            // Show personalized carousel for sender
-            if (name === sender) {
-            document.getElementById("carouselSender").classList.remove("hidden");
-            document.getElementById("carouselReceiver").classList.add("hidden");
-            // Show personalized carousel for receiver
-            } else if (name === receiver) {
-            document.getElementById("carouselSender").classList.add("hidden");
-            document.getElementById("carouselReceiver").classList.remove("hidden");
-            }
-        // If one of them hasn't already replied
-        // We can safely assume the one accesing this page is the one who HAS replied
-        } else if (completenessSender === "False" || completenessReceiver === "False") {
-            // Hide all carousel related content
-            document.getElementById("roomLogo").classList.remove("hidden");
-            document.getElementById("waitingContainer").classList.remove("hidden");
-            document.getElementById("reminderButton").classList.remove("hidden");
-            document.getElementById("createNewButton").classList.add("hidden");
-            document.getElementById("carouselSender").classList.add("hidden");
-            document.getElementById("carouselReceiver").classList.add("hidden");
-            
-            // Check if the last update was today
-            if (lastUpdate === today) {
-                document.getElementById("reminderButton").classList.add("disable");
-                const reminderWait = document.getElementById("reminderWait");
-                if (name === sender) {
-                  reminderWait.innerHTML = "{{ room.other_person_name}} has already been notified today. Come back tomorrow!";
-                } else if (name === receiver) {
-                  reminderWait.innerHTML = "{{ room.user_name}} has already been notified today. Come back tomorrow!";
-                }             
-            }
-
-            // Show personalized waiting message based on the user
-            if (name === sender) {
-                document.getElementById("messageSender").classList.add("hidden");
-                document.getElementById("messageReceiver").classList.remove("hidden");
-            } else if (name === receiver) {
-                document.getElementById("messageSender").classList.remove("hidden");
-                document.getElementById("messageReceiver").classList.add("hidden");
-            }
-        }
-    });
-
-    let currentSlideSender = 0;
-    let currentSlideReceiver = 0;
-
-    function moveSlide(direction, carouselId) {
-        const carousel = document.querySelector(`#${carouselId} .carousel-slides`);
-        const slides = carousel.querySelectorAll('.carousel-slide');
-        const totalSlides = slides.length;
-
-        let currentSlide = carouselId === 'carouselSender' ? currentSlideSender : currentSlideReceiver;
-        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
-
-        const offset = -currentSlide * 100;
-        carousel.style.transform = `translateX(${offset}%)`;
-
-        if (carouselId === 'carouselSender') {
-            currentSlideSender = currentSlide;
-        } else {
-            currentSlideReceiver = currentSlide;
-        }
-    }
-  </script>
+  <script src="{% static 'v1/js/room.js' %}"></script>
 </body>
 
 {% endblock %}
