@@ -1,8 +1,9 @@
 import logging
 from django.forms import ValidationError
 from django_cron import CronJobBase, Schedule
+from django.conf import settings
 
-from quiz2.settings import EMAIL_HOST_USER
+from quiz2.settings import EMAIL_HOST_USER, SITE_URL
 
 from .utils import SendEmail, check_completeness
 from .models import Room
@@ -31,21 +32,22 @@ class SendReminderDeletion(CronJobBase):
         rooms = Room.objects.filter(last_modification__lt=reminder)
         logging.info(f'Se encontraron {rooms.count()} rooms para enviar recordatorio.')
         subject = f'Deletion reminder'
-
+        
         for room in rooms:
+            room_url = f'{settings.SITE_URL}/{room.id}'
             completeness = check_completeness(room.id)
             if completeness['sender_completed'] and completeness['receiver_completed']:
                 message_sender = f'This room ({room.id}) will be deleted in 48 hours. Thanks for playing.'
                 message_receiver = f'This room ({room.id}) will be deleted in 48 hours. Thanks for playing.'
             elif completeness['sender_completed'] and not completeness['receiver_completed']:
                 message_sender = f'The room with room id {room.id} you have with {room.other_person_name} will be deleted in 48 hours due inactivity. ' 
-                message_receiver = f'The room created by {room.user_name} to share with you, is close to be deleted due inactivity. Only your answers are missing. Hurry up!'
+                message_receiver = f'The room created by {room.user_name} to share with you, is close to be deleted due inactivity. Only your answers are missing. Hurry up and visit : {room_url}/{room.other_person_name}.'
             elif completeness['receiver_completed'] and not completeness['sender_completed']:
-                message_sender= f'The room with id {room.id} you created is close to be deleted. {room.other_person_name} has already replied and waiting for your answers. Hurry up!'
+                message_sender= f'The room with id {room.id} you created is close to be deleted. {room.other_person_name} has already replied and waiting for your answers. Hurry up and visit {room_url}/{room.user_name} to complete the quiz.'
                 message_receiver = f'Unfortunately, {room.user_name} hasnt yet replied, and the room {room.id} is close to be deleted due inactivity. '
             elif not completeness['sender_completed'] and not completeness['receiver_completed']:
-                message_sender=f'The room you created with id {room.id} will deleted due inactivity.  '
-                message_receiver= f'The room {room.user_name} created and shared with you, will be deleted due inactivity.'
+                message_sender=f'The room you created with id {room.id} will deleted due inactivity. Visit {room_url}/{room.user_name} to answer your quiz.'
+                message_receiver= f'The room {room.user_name} created and shared with you will be deleted due inactivity. Visit {room_url}/{room.other_person_name} to answer the quiz.'
             try:
                 logging.info(f'Enviando recordatorio a {room.sender_email} y a {room.receiver_email} para el room {room.id}')
                 
