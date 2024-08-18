@@ -213,7 +213,7 @@ def room2(request, room_id, name):
         'name':name
         })      
         
-        
+    #SEND MAIL WITH 'SEND REMINDER' BUTTON    
     if request.method =='POST':
         subject = f'{name} is still waiting for your answers.'
         if user_sender:
