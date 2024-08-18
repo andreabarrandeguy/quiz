@@ -57,6 +57,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById("messageReceiver").classList.add("hidden");
         }
     }
+
+    const reminderButton = document.getElementById('reminderButton');
+
+    reminderButton.addEventListener('click', function (event) {
+        alert('Reminder sent');
+    });
+
 });
 
 let currentSlideSender = 0;
@@ -79,3 +86,4 @@ function moveSlide(direction, carouselId) {
         currentSlideReceiver = currentSlide;
     }
 }
+

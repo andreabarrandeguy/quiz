@@ -108,7 +108,10 @@ Room | Results
   </a>
   <div class="roomButtons">
     <p id="reminderWait" class="reminderWait"></p>
-    <a href="" class="createNew" id="reminderButton">Send reminder</a>
+    <form method="post" action="{% url 'room2' room.id name %}">
+      {% csrf_token %}
+      <button type="submit" class="createNew" id="reminderButton">Send reminder</button>
+    </form>
   </div>
   <script src="{% static 'v1/js/room.js' %}"></script>
 </body>

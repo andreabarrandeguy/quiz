@@ -521,6 +521,7 @@ form .question-input {
   width: 150px;
   height: 40px;
   align-self: center;
+  border: none;
   align-content: center;
   border-radius: 10px;
   background: linear-gradient(
