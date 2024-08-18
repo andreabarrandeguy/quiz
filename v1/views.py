@@ -214,6 +214,15 @@ def room2(request, room_id, name):
         })      
         
         
+    if request.method =='POST':
+        subject = f'{name} is still waiting for your answers.'
+        if user_sender:
+            message = f'{name} has already replied and waits for your answers. Visit {scheme}://{link}/{room.id}/{room.other_person_name} and do your part.'
+            SendEmail(room.receiver_email, EMAIL_HOST_USER, subject, message)
+        elif user_receiver:
+            message = f'{name} has already replied and waits for your answers. Visit {scheme}://{link}/{room.id}/{room.user_name} and do your part.'
+            SendEmail(room.sender_email, EMAIL_HOST_USER, subject, message)
+    
     return render(request, 'v1/room.html', {
     'user_sender': user_sender,
     'user_receiver': user_receiver,
