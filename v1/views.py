@@ -2,9 +2,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from quiz2.settings import EMAIL_HOST_USER
-from .models import Room, Question, shortURL
+from .models import Room, Question
 from .forms import NewQuestionForm, NewRoomForm
-from .utils import shorten_url, SendEmail, check_completeness
+from .utils import SendEmail, check_completeness
 
 def index(request):
     return render(request, 'v1/index.html')
@@ -229,8 +229,3 @@ def error(request):
 
 def answers(request):
     return render(request, 'v1/answers.html')
-
-
-def redirect_short_url(request, short_url):
-    short_url_instance = get_object_or_404(shortURL, short_url=short_url)
-    return redirect(short_url_instance.long_url)

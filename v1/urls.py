@@ -7,6 +7,4 @@ urlpatterns = [
     path('<uuid:room_id>/<str:name>/', views.room2, name='room2'),
     path('answers/<str:name>/', views.answers, name='answers'),
     path('error/', views.error, name = 'error'),
-    
-    path('<str:short_url>/', views.redirect_short_url, name='redirect_short_url'),
 ]
