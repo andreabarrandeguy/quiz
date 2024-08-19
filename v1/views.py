@@ -66,12 +66,12 @@ def create(request):
         #SEND MAIL TO RECEIVER
         scheme = request.scheme
         link = request.get_host()
-        subject_receiver= f'{room.user_name} just created a new room.'
-        message_receiver=f'Hi {room.other_person_name}, {room.user_name} created a new room. Take a look and answer the questions. Visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a>.'
+        subject_receiver= f'Room | Join {room.user_name}!'
+        message_receiver=f'Hi {room.other_person_name}, {room.user_name} is challenging you to join Room and answer questions about each other. How well do you know each other? Visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> and find out!'
         SendEmail(room.receiver_email, EMAIL_HOST_USER, subject_receiver, message_receiver)
         #SEND MAIL TO SENDER
         subject_sender=f'Room Created'
-        message_sender=f'Hi {room.user_name}, you have succesfully created a new room. This is your <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> to answer.'
+        message_sender=f'Hi {room.user_name}, If you havent already, please answer the questions about {room.other_person_name} and yourself by visiting this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a>.'
         SendEmail(room.sender_email, EMAIL_HOST_USER, subject_sender, message_sender)
          
         return redirect(f'/{room.id}/{room_form.cleaned_data["user_name"]}/')
@@ -97,7 +97,7 @@ def room2(request, room_id, name):
     elif name == room.other_person_name:
         user_receiver = True
     else:
-        return redirect('error.html')
+        return render(request, 'error.html')
 
     #GET QUESTIONS FROM MODEL AND CHECKING IF COMPLETED    
     questions = Question.objects.filter(room=room)    
@@ -141,13 +141,13 @@ def room2(request, room_id, name):
             #NOTIFICATIONS TO RECEIVER
                 #IF RECEIVER HASN'T YET REPLIED
             if not completeness['receiver_completed']:
-                subject= f'{name} has just replied about you.'
-                message = f'Hi, {room.other_person_name}. {name} has replied about both of you. Please visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> and do your part.'
+                subject= f'Room | {name} has just replied about you.'
+                message = f'Hi, {room.other_person_name}. {name} is taking the lead and has already answered the questions in Room! Follow this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> to catch up!'
                 SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
-                #IF RECEIVER REPLIED FIRST
+                #IF RECEIVER REPLIED FIRST - ROOM COMPLETED
             elif completeness['receiver_completed']:
-                subject=f'{name} has just replied about you.'
-                message=f'Hi, {room.other_person_name}. {name} has completed it part of the quiz. Visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> and take a look how well you know each other.'
+                subject=f'Room | View your results!'
+                message=f'Hi, {room.other_person_name}. {name}  has already replied and Room is complete! Visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> to view your results and find out how well you know each other.'
                 SendEmail(receiver_email, EMAIL_HOST_USER, subject, message)
 
             return render(request, 'v1/room.html', {
@@ -186,13 +186,13 @@ def room2(request, room_id, name):
             #NOTIFICATIONS
                 #IF SENDER HASN'T YET REPLIED
             if not completeness['sender_completed']:
-                subject= f'{name} has just replied about you.'
-                message = f'Hi, {room.user_name}. {name} has already replied about both of you. Hurry up and visit this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a>. {name} is still waiting.'
+                subject= f'Room | {name} has just replied about you.'
+                message = f'Hi, {room.user_name}. {name} is taking the lead and has already answered the questions in Room! Follow this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> to catch up!.'
                 SendEmail(sender_email, EMAIL_HOST_USER, subject, message)
-                #IF SENDER REPLIED FIRST
+                #IF SENDER REPLIED FIRST - ROOM COMPLETED
             elif completeness['sender_completed']:
-                subject=f'{name} has just replied about you.'
-                message=f'Hi, {room.user_name}. {name} has completed it part of the quiz. Visit this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> and take a look how well you know each other.'
+                subject=f'Room | View your results!'
+                message=f'Hi, {room.user_name}. {name} has already replied and Room is complete! Visit this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> to view your results and find out how well you know each other.'
                 SendEmail(sender_email, EMAIL_HOST_USER, subject, message)    
         
             return render(request, 'v1/room.html', {
@@ -215,12 +215,12 @@ def room2(request, room_id, name):
         
     #SEND MAIL WITH 'SEND REMINDER' BUTTON    
     if request.method =='POST':
-        subject = f'{name} is still waiting for your answers.'
+        subject = f'Room | {name} is still waiting.'
         if user_sender:
-            message = f'{name} has already replied and waits for your answers. Visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> and do your part.'
+            message = f'Hi {room.other_person_name}, this is a reminder from {name} who is still waiting for your answers in Room. When you get a moment, visit this <a href="{scheme}://{link}/{room.id}/{room.other_person_name}">link</a> and join the fun!'
             SendEmail(room.receiver_email, EMAIL_HOST_USER, subject, message)
         elif user_receiver:
-            message = f'{name} has already replied and waits for your answers. Visit this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> and do your part.'
+            message = f'Hi {room.user_name}, this is a reminder from {name} who is still waiting for your answers in Room. When you get a moment, visit this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a> and join the fun!'
             SendEmail(room.sender_email, EMAIL_HOST_USER, subject, message)
     
     return render(request, 'v1/room.html', {
