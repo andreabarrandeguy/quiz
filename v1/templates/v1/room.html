@@ -14,7 +14,7 @@ Room | Results
       data-last-update="{{ room.last_modification }}">
   <div class="header_title">
     <img
-      src="{% static 'v1/room.png' %}"
+      src="{% static 'v1/room.png' %}" alt="Room logo"
       class="header_logo_right"
     />
     <h1>results</h1>
@@ -23,7 +23,7 @@ Room | Results
 
   <div id="waitingContainer" class="waitingContainer">
     <img
-      id="roomLogo"
+      id="roomLogo" alt="Room logo"
       class="roomLogo"
       src="{% static 'v1/logo.png' %}"
     />
@@ -108,7 +108,10 @@ Room | Results
   </a>
   <div class="roomButtons">
     <p id="reminderWait" class="reminderWait"></p>
-    <a href="" class="createNew" id="reminderButton">Send reminder</a>
+    <form method="post" action="{% url 'room2' room.id name %}">
+      {% csrf_token %}
+      <button type="submit" class="createNew" id="reminderButton">Send reminder</button>
+    </form>
   </div>
   <script src="{% static 'v1/js/room.js' %}"></script>
 </body>

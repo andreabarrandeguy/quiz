@@ -30,16 +30,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Define the list of random questions
     const questionsList = [
-        "What is your favorite book?",
-        "If you could visit any place in the world, where would you go?",
-        "What is the most memorable trip you've ever taken?",
-        "What hobby would you like to pick up if you had more time?",
-        "Who is someone you admire and why?",
-        "What is a skill you'd like to learn and why?",
-        "What is your favorite movie and why?",
-        "If you could have dinner with any historical figure, who would it be?",
-        "What is your go-to comfort food?",
-        "What was the last book you read and enjoyed?",
+        "Favorite book?",
+        "Any place in the world to visit?",
+        "Most memorable trip together?",
+        "A new hobby to start",
+        "Biggest strength",
+        "Adorable weakness",
+        "Favorite movie?",
+        "Historical figure to have dinner with",
+        "Go-to comfort food?",
+        "Sweet or salty?",
+        "Surprise or be surprised?",
+        "Dream job?",
+        "Morning person or night owl?",
+        "Biggest fear?",
+        "Favorite season?",
+        "Most treasured possession?",
+        "Perfect weekend activity?",
+        "Favorite way to relax?",
+        "Beach or mountains?",
+        "One thing always in the fridge?",
+        "A guilty pleasure?",
+        "Favorite color?",
     ];
 
     // Function to update the display based on question count

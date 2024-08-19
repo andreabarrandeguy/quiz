@@ -97,7 +97,7 @@ def room2(request, room_id, name):
     elif name == room.other_person_name:
         user_receiver = True
     else:
-        return render(request, 'error.html')
+        return render(request, 'v1/404.html')
 
     #GET QUESTIONS FROM MODEL AND CHECKING IF COMPLETED    
     questions = Question.objects.filter(room=room)    
@@ -234,7 +234,7 @@ def room2(request, room_id, name):
     
 
 def error(request):
-    return render(request, 'v1/error.html')
+    return render(request, 'v1/404.html')
 
 def answers(request):
     return render(request, 'v1/answers.html')

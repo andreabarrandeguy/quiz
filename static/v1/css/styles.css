@@ -343,7 +343,7 @@ form .question-input {
 }
 
 .note {
-  font-style: italic;
+  font-weight: 100;
   font-size: 0.8rem;
   margin-bottom: 15px;
 }
@@ -521,6 +521,7 @@ form .question-input {
   width: 150px;
   height: 40px;
   align-self: center;
+  border: none;
   align-content: center;
   border-radius: 10px;
   background: linear-gradient(
@@ -557,6 +558,26 @@ form .question-input {
 
 .disable:hover {
   opacity: 0.5;
+}
+
+/*404*/
+.body404 {
+  justify-content: center;
+}
+
+.body404_text {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.body404 h1 {
+  font-weight: 600;
+}
+
+.body404 h2 {
+  font-size: 2rem;
 }
 
 /* Media Queries */
@@ -731,6 +752,10 @@ form .question-input {
 
   .answersContainer_answer {
     margin: 10px 0;
+  }
+
+  .body404_text {
+    flex-wrap: wrap;
   }
 }
 

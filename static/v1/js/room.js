@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const lastUpdateRaw = body.getAttribute('data-last-update');
 
     const lastUpdate = new Date(lastUpdateRaw).toISOString().split('T')[0];
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toLocaleDateString('en-CA');
 
     // If both have already replied
     if (completenessSender === "True" && completenessReceiver === "True") {
@@ -57,14 +57,21 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.getElementById("messageReceiver").classList.add("hidden");
         }
     }
+
+    const reminderButton = document.getElementById('reminderButton');
+
+    reminderButton.addEventListener('click', function (event) {
+        alert('Reminder sent');
+    });
+
 });
 
 let currentSlideSender = 0;
 let currentSlideReceiver = 0;
 
 function moveSlide(direction, carouselId) {
-    const carousel = document.querySelector(`#${carouselId} .carousel-slides`);
-    const slides = carousel.querySelectorAll('.carousel-slide');
+    const carousel = document.querySelector(`#${carouselId} .carouselSlides`);
+    const slides = carousel.querySelectorAll('.carouselSlides_slide');
     const totalSlides = slides.length;
 
     let currentSlide = carouselId === 'carouselSender' ? currentSlideSender : currentSlideReceiver;
@@ -79,3 +86,4 @@ function moveSlide(direction, carouselId) {
         currentSlideReceiver = currentSlide;
     }
 }
+
