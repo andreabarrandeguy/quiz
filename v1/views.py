@@ -71,7 +71,7 @@ def create(request):
         SendEmail(room.receiver_email, EMAIL_HOST_USER, subject_receiver, message_receiver)
         #SEND MAIL TO SENDER
         subject_sender=f'Room Created'
-        message_sender=f'Hi {room.user_name}, If you havent already, please answer the questions about {room.other_person_name} and yourself by visiting this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a>.'
+        message_sender=f'Hi {room.user_name}, you have successfully created a Room. If you havent already, please answer the questions about {room.other_person_name} and yourself by visiting this <a href="{scheme}://{link}/{room.id}/{room.user_name}">link</a>.'
         SendEmail(room.sender_email, EMAIL_HOST_USER, subject_sender, message_sender)
          
         return redirect(f'/{room.id}/{room_form.cleaned_data["user_name"]}/')
