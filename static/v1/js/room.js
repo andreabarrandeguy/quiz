@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const lastUpdateRaw = body.getAttribute('data-last-update');
 
     const lastUpdate = new Date(lastUpdateRaw).toISOString().split('T')[0];
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toLocaleDateString('en-CA');
 
     // If both have already replied
     if (completenessSender === "True" && completenessReceiver === "True") {
