@@ -641,7 +641,8 @@ form .question-input {
   }
 
   .questionContainer {
-    width: 85%;
+    width: 80dvw;
+    margin: 20px 0;
   }
 
   .header_title_text {
@@ -652,7 +653,7 @@ form .question-input {
     width: 100%;
   }
 
-  .carousel {
+  /*.carousel {
     height: auto;
     overflow: visible;
     margin-bottom: 15px;
@@ -673,7 +674,7 @@ form .question-input {
 
   .carouselSlides_slide h1 {
     width: 90%;
-  }
+  }*/
 }
 
 @media (max-width: 480px) {
@@ -813,10 +814,6 @@ form .question-input {
 
   .bodyCreate_header_text {
     font-size: 0.75rem;
-  }
-
-  .questionContainer {
-    width: 75%;
   }
 }
 
