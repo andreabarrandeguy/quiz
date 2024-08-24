@@ -388,6 +388,7 @@ form .question-input {
   width: 100px; 
   align-self: center;
   margin-bottom: 15px;
+  color: black;
 }
 
 /* Room */
@@ -653,7 +654,7 @@ form .question-input {
     width: 100%;
   }
 
-  /*.carousel {
+  .carousel {
     height: auto;
     overflow: visible;
     margin-bottom: 15px;
@@ -665,7 +666,11 @@ form .question-input {
   }
 
   .answersContainer_answers {
-    margin: 0 30px;
+    margin: 30px;
+  }
+
+  .answersContainer_answer {
+    margin: 10px 0;
   }
 
   .carouselSlides_slide {
@@ -674,7 +679,7 @@ form .question-input {
 
   .carouselSlides_slide h1 {
     width: 90%;
-  }*/
+  }
 }
 
 @media (max-width: 480px) {
@@ -747,14 +752,6 @@ form .question-input {
 
   .carouselSlides_slide {
     justify-content: space-around;
-  }
-
-  .answersContainer_answers {
-    margin: 30px;
-  }
-
-  .answersContainer_answer {
-    margin: 10px 0;
   }
 
   .body404_text {

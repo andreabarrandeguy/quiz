@@ -1,8 +1,6 @@
-{% extends "v1/layout.html" %}
-{% load static %}
-{% block title %}
-Room | Results
-{% endblock %}
+{% extends "v1/layout.html" %} {% load static %}
+{% block title %} Room | Results {% endblock %}
+
 {% block body %}
 
 <body class="bodyRoom"
@@ -13,20 +11,13 @@ Room | Results
       data-completeness-receiver="{{ completeness.receiver_completed }}"
       data-last-update="{{ room.last_modification }}">
   <div class="header_title">
-    <img
-      src="{% static 'v1/room.png' %}" alt="Room logo"
-      class="header_logo_right"
-    />
+    <img src="{% static 'v1/room.png' %}" alt="Room logo" class="header_logo_right">
     <h1>results</h1>
     <input type="hidden" id="name" value="{{ name }}">
   </div>
 
   <div id="waitingContainer" class="waitingContainer">
-    <img
-      id="roomLogo" alt="Room logo"
-      class="roomLogo"
-      src="{% static 'v1/logo.png' %}"
-    />
+    <img id="roomLogo" alt="Room logo" class="roomLogo" src="{% static 'v1/logo.png' %}">
     <div id="messageSender" class="message">
       Come back later, {{ room.user_name }} still hasn't replied.
     </div>
@@ -103,9 +94,7 @@ Room | Results
     <button class="slideButton next" onclick="moveSlide(1, 'carouselReceiver')">&#10095;</button>
   </div>
 
-  <a href="{% url 'create' %}" class="createNew" id="createNewButton">
-    Create a new one!
-  </a>
+  <a href="{% url 'create' %}" class="createNew" id="createNewButton">Create a new one!</a>
   <div class="roomButtons">
     <p id="reminderWait" class="reminderWait"></p>
     <form method="post" action="{% url 'room2' room.id name %}">
