@@ -272,6 +272,7 @@ form .question-input {
   background-color: white;
   border: none;
   border-radius: 15px;
+  color: black;
 }
 
 .questionList {
@@ -715,6 +716,7 @@ form .question-input {
     content: '+';
     font-size: 24px;
     font-weight: 600;
+    color: black;
   }
 
   #addQuestionButton span {
