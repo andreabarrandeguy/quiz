@@ -177,7 +177,7 @@ button {
 
 .header_logo_left {
   width: 150px; 
-  height: fit-content; 
+  height: auto; 
   margin-left: 10px;
 }
 
@@ -392,7 +392,7 @@ form .question-input {
 /* Room */
 .header_logo_right {
   width: 150px; 
-  height: fit-content; 
+  height: auto; 
   margin-right: 10px;
 }
 

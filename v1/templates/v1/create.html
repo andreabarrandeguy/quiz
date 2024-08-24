@@ -6,9 +6,7 @@
     <div class="bodyCreate_header">
       <div class="header_title">
         <h1 class="header_title_text_create">Create</h1>
-        <img
-          src="{% static 'v1/room.png' %}" 
-          alt="Room logo" class="header_logo_left"/>
+        <img src="{% static 'v1/room.png' %}" alt="Room logo" class="header_logo_left">
       </div>
       <ol class="bodyCreate_header_text">
         <li>1. Enter your name and email address</li>
@@ -37,12 +35,7 @@
         <button type="button" class="randomButton" id="randomButton" title="Click to get a random question suggestion">
           <i class="fa-solid fa-shuffle"></i>
         </button>
-        <button
-          type="submit"
-          class="addQuestionButton"
-          name="add_question"
-          id="addQuestionButton"
-        >
+        <button type="submit" class="addQuestionButton" name="add_question" id="addQuestionButton">
           <span>Add question</span>
         </button>
       </div>
@@ -52,27 +45,16 @@
           <ul class="questionList_question_text">
             {{question}}
           </ul>
-          <a
-            class="questionList_delete"
-            href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"
-            ><i class="fa-solid fa-trash"></i
-          ></a>
+          <a class="questionList_delete" href="{% url 'create' %}?delete_question_id={{ forloop.counter0 }}"><i class="fa-solid fa-trash"></i></a>
         </div>
         {% endfor %}
       </div>
 
       <div class="buttonsContainer">
         <a href="{% url 'index' %}" class="buttonsContainer_back">Back</a>
-        <button
-          type="submit"
-          class="createButton"
-          name="create"
-          id="createRoom"
-        >
-          Create
-        </button>
+        <button type="submit" class="createButton" name="create" id="createRoom">Create</button>
       </div>
-      <input type="hidden" id="has_questions" value="{{ questions|length }}" />
+      <input type="hidden" id="has_questions" value="{{ questions|length }}">
     </form>
   </div>
   <p ></p>
